@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-flashcardgeneratorai-dev-195628-authRole",
+      "UnauthRoleArn": "arn:aws:iam::964590334252:role/amplify-flashcardgeneratorai-dev-195628-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::964590334252:role/amplify-flashcardgeneratorai-dev-195628-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-flashcardgeneratorai-dev-195628-deployment",
+      "UnauthRoleName": "amplify-flashcardgeneratorai-dev-195628-unauthRole",
+      "StackName": "amplify-flashcardgeneratorai-dev-195628",
+      "StackId": "arn:aws:cloudformation:us-east-1:964590334252:stack/amplify-flashcardgeneratorai-dev-195628/ed02c260-058e-11ee-849b-0ae85463712d",
+      "AmplifyAppId": "d2f67788wz8zpi"
+    },
+    "categories": {
+      "auth": {
+        "flashcardgeneratorai3209fb66": {}
+      }
+    }
+  }
+}

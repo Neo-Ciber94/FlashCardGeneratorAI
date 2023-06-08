@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "flashcardgeneratorai3209fb66_identitypool_3209fb66",
+    "identityPoolName": "flashcardgeneratoraibc4223a7_identitypool_bc4223a7",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "flashc3209fb66",
-    "userPoolName": "flashcardgeneratorai3209fb66_userpool_3209fb66",
+    "resourceNameTruncated": "flashcbc4223a7",
+    "userPoolName": "flashcardgeneratoraibc4223a7_userpool_bc4223a7",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,40 +31,25 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "flashc3209fb66_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "flashcbc4223a7_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "3209fb66",
-    "resourceName": "flashcardgeneratorai3209fb66",
+    "sharedId": "bc4223a7",
+    "resourceName": "flashcardgeneratoraibc4223a7",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "defaultSocial",
     "hostedUI": true,
     "usernameAttributes": [
       "email"
     ],
-    "userPoolGroupList": [],
-    "serviceName": "Cognito",
-    "usernameCaseSensitive": false,
-    "useEnabledMfas": true,
-    "authRoleArn": {
-      "Fn::GetAtt": [
-        "AuthRole",
-        "Arn"
-      ]
-    },
-    "unauthRoleArn": {
-      "Fn::GetAtt": [
-        "UnauthRole",
-        "Arn"
-      ]
-    },
-    "breakCircularDependency": true,
-    "dependsOn": [],
-    "hostedUIDomainName": "flashcardgeneratoraid0b67850-d0b67850",
+    "hostedUIDomainName": "flashcardgeneratoraibc4223a7-bc4223a7",
     "authProvidersUserPool": [
       "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://main.d2f67788wz8zpi.amplifyapp.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://main.d2f67788wz8zpi.amplifyapp.com/\"]}",
-    "authProviders": []
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://main.d3csfduueb13ay.amplifyapp.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://main.d3csfduueb13ay.amplifyapp.com/\"]}",
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
+    "usernameCaseSensitive": false,
+    "useEnabledMfas": true
   }
 }

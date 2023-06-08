@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "flashcardgeneratoraibc4223a7_identitypool_bc4223a7",
+    "identityPoolName": "flashcardgeneratorai5c19902d_identitypool_5c19902d",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "flashcbc4223a7",
-    "userPoolName": "flashcardgeneratoraibc4223a7_userpool_bc4223a7",
+    "resourceNameTruncated": "flashc5c19902d",
+    "userPoolName": "flashcardgeneratorai5c19902d_userpool_5c19902d",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,22 +31,22 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "flashcbc4223a7_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "flashc5c19902d_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "bc4223a7",
-    "resourceName": "flashcardgeneratoraibc4223a7",
+    "sharedId": "5c19902d",
+    "resourceName": "flashcardgeneratorai5c19902d",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "defaultSocial",
     "hostedUI": true,
     "usernameAttributes": [
       "email"
     ],
-    "hostedUIDomainName": "flashcardgeneratoraibc4223a7-bc4223a7",
+    "hostedUIDomainName": "flashcardgeneratorai5c19902d-5c19902d",
     "authProvidersUserPool": [
       "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://main.d3csfduueb13ay.amplifyapp.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://main.d3csfduueb13ay.amplifyapp.com/\"]}",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://main.d3csfduueb13ay.amplifyapp.com/\"],\"LogoutURLs\":[\"https://main.d3csfduueb13ay.amplifyapp.com/\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,

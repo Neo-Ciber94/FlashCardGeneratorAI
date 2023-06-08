@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "flashcardgeneratoraibc4223a7": {
+    "flashcardgeneratorai5c19902d": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "HostedUIDomain": "string",

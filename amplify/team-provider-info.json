@@ -14,6 +14,10 @@
     "categories": {
       "auth": {
         "flashcardgeneratorai5c19902d": {}
+      },
+      "storage": {
+        "flashcardtopic": {},
+        "flashcard": {}
       }
     }
   }

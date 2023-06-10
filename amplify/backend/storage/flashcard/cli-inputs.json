@@ -1,0 +1,22 @@
+{
+  "resourceName": "flashcard",
+  "tableName": "flashcard",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "lastModified",
+    "fieldType": "number"
+  },
+  "gsi": [
+    {
+      "name": "flashCardOwnerIndex",
+      "partitionKey": {
+        "fieldName": "owner",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

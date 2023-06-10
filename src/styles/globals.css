@@ -2,12 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ::-webkit-scrollbar {
+    @apply w-4
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 border border-gray-200
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-red-500 shadow-md
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-red-600
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    @apply bg-red-700
+  }
+}
+
 @layer components {
   .pattern {
     height: 100%;
     background-image: repeating-linear-gradient(
       var(--card-color, white) 0px,
-      var(--card-color, white)  24px,
+      var(--card-color, white) 24px,
       var(--line-accent, teal) 25px
     );
   }

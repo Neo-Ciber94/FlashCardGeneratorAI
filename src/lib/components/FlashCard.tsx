@@ -30,7 +30,7 @@ export default function FlashCard({ flashCard }: FlashCardProps) {
     <>
       <div
         onClick={() => setIsOpen(true)}
-        className={`shadow-lg py-[28px] px-4 h-64 w-52  items-center justify-center rounded-lg
+        className={`shadow-lg py-7 px-4 h-64 sm:w-52 w-10/12 mx-auto items-center justify-center rounded-lg
         cursor-pointer transition-all duration-300 ${
           isOpen ? "opacity-0 scale-105" : "opacity-100 scale-100 pattern"
         }`}
@@ -112,8 +112,8 @@ function FlashCardPreview({ flashCard, open, onClose }: FlashCardModalProps) {
             >
               <Dialog.Panel
                 onClick={() => setIsFlip((x) => !x)}
-                className={`w-full min-h-[300px]
-                      text-lg relative max-w-md rounded-2xl 
+                className={`w-full min-h-[400px]
+                      text-lg relative max-w-lg rounded-2xl 
                       text-left align-middle shadow-xl transition-all cursor-pointer flip-card pattern ${
                         globalFont.className
                       } ${isFlip ? "flipped" : ""}`}

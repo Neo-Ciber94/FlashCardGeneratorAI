@@ -7,7 +7,8 @@ export const flashCardModel = z.object({
     content: z.string(),
     color: z.string(),
     owner: z.string(),
-    lastModified: z.number().positive()
+    lastModified: z.number().positive(),
+    isAiGenerated: z.boolean().default(false),
 })
 
 export type FlashCardModel = z.infer<typeof flashCardModel>;

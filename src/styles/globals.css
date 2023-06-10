@@ -4,23 +4,23 @@
 
 @layer base {
   ::-webkit-scrollbar {
-    @apply w-4
+    @apply w-4;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-gray-100 border border-gray-200
+    @apply bg-gray-100 shadow-inner shadow-gray-400
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-red-500 shadow-md
+    @apply bg-red-500 shadow-md;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-red-600
+    @apply bg-red-600;
   }
 
   ::-webkit-scrollbar-thumb:active {
-    @apply bg-red-700
+    @apply bg-red-700;
   }
 }
 

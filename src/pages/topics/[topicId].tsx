@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<{
       title: faker.word.words({
         count: faker.number.int({ min: 3, max: 8 }),
       }),
-      content: faker.lorem.paragraphs({ min: 3, max: 8 }),
+      content: faker.lorem.paragraphs({ min: 1, max: 2 }),
       lastModified: faker.date.past({ years: 3 }).getTime(),
       owner: faker.string.uuid(),
       color: faker.helpers.arrayElement(COLORS),

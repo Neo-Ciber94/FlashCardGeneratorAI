@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .pattern {
+    height: 100%;
+    background-image: repeating-linear-gradient(
+      var(--card-color, white) 0px,
+      var(--card-color, white)  24px,
+      var(--line-accent, teal) 25px
+    );
+  }
+
+  .flip-card {
+    transition: all 700ms;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    background-color: transparent;
+  }
+
+  .flip-card.flipped {
+    transform: rotateY(180deg);
+    z-index: 100;
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    position: absolute;
+    backface-visibility: hidden;
+  }
+
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+}

@@ -1,5 +1,16 @@
 import ContrastColor from "contrast-color";
 import { FlashCardModel } from "../models/flashcard";
+import { Transition, Dialog } from "@headlessui/react";
+import { useState, Fragment } from "react";
+import Color from "color";
+import { globalFont } from "../layout/Layout";
+
+declare module "react" {
+  interface CSSProperties {
+    "--card-color"?: string;
+    "--line-accent"?: string;
+  }
+}
 
 export interface FlashCardProps {
   flashCard: FlashCardModel;
@@ -7,49 +18,133 @@ export interface FlashCardProps {
 
 export default function FlashCard({ flashCard }: FlashCardProps) {
   const cc = new ContrastColor();
+  const borderColor = new Color(flashCard.color).darken(0.05).fade(0.05);
+  const [isOpen, setIsOpen] = useState(false);
+  const lineColor = new ContrastColor({
+    fgDarkColor: "teal",
+    fgLightColor: "black",
+  });
+
+  // TODO: Translate to the center of the screen?
   return (
-    <div
-      className="shadow-lg px-4 py-8 h-64 w-52 flex flex-row items-center justify-center rounded-lg
-       transition-transform hover:scale-110 duration-300 cursor-pointer relative"
-      style={{
-        backgroundColor: flashCard.color,
-        color: cc.contrastColor({ bgColor: flashCard.color }),
-        border: `2px solid ${alpha(darken(flashCard.color, 0.05), 1)}`,
-      }}
-    >
-      <p className="text-center font-bold">{flashCard.title}</p>
-    </div>
+    <>
+      <div
+        onClick={() => setIsOpen(true)}
+        className={`shadow-lg py-[28px] px-4 h-64 w-52  items-center justify-center rounded-lg
+        cursor-pointer transition-all duration-300 ${
+          isOpen ? "opacity-0 scale-105" : "opacity-100 scale-100 pattern"
+        }`}
+        style={{
+          backgroundColor: flashCard.color,
+          color: cc.contrastColor({ bgColor: flashCard.color }),
+          border: `2px solid ${borderColor}`,
+          "--card-color": flashCard.color,
+          "--line-accent": new Color(
+            lineColor.contrastColor({ bgColor: flashCard.color })
+          )
+            .fade(0.6)
+            .toString(),
+        }}
+      >
+        <div className="font-bold text-base">{flashCard.title}</div>
+      </div>
+
+      <FlashCardPreview
+        flashCard={flashCard}
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    </>
   );
 }
 
-function alpha(color: string, alpha: number): string {
-  const rr = color.slice(1, 3);
-  const gg = color.slice(3, 5);
-  const bb = color.slice(5, 7);
-  const a = Math.max(1, Math.min(0, alpha)) * 255;
-  return `#${rr}${gg}${bb}${a.toString(16)}`;
+interface FlashCardModalProps {
+  flashCard: FlashCardModel;
+  open: boolean;
+  onClose: () => void;
 }
 
-function darken(color: string, percent: number) {
-  let r = parseInt(color.substring(1, 3), 16);
-  let g = parseInt(color.substring(3, 5), 16);
-  let b = parseInt(color.substring(5, 7), 16);
+function FlashCardPreview({ flashCard, open, onClose }: FlashCardModalProps) {
+  const cc = new ContrastColor();
+  const borderColor = new Color(flashCard.color).darken(0.05).fade(0.05);
+  const [isFlip, setIsFlip] = useState(false);
+  const lineContrastColor = new ContrastColor({
+    fgDarkColor: "teal",
+    fgLightColor: "black",
+  });
 
-  r = r * (1 - percent);
-  g = g * (1 - percent);
-  b = b * (1 - percent);
+  const lineColor = new Color(
+    lineContrastColor.contrastColor({ bgColor: flashCard.color })
+  )
+    .fade(0.6)
+    .toString();
 
-  r = r < 255 ? r : 255;
-  g = g < 255 ? g : 255;
-  b = b < 255 ? b : 255;
+  const handleClose = () => {
+    onClose();
+    setIsFlip(false);
+  };
 
-  r = Math.round(r);
-  g = Math.round(g);
-  b = Math.round(b);
+  return (
+    <Transition appear show={open} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={handleClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
 
-  let rr = r.toString(16).length == 1 ? "0" + r.toString(16) : r.toString(16);
-  let gg = g.toString(16).length == 1 ? "0" + g.toString(16) : g.toString(16);
-  let bb = b.toString(16).length == 1 ? "0" + b.toString(16) : b.toString(16);
-
-  return "#" + rr + gg + bb;
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-50"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-50"
+            >
+              <Dialog.Panel
+                onClick={() => setIsFlip((x) => !x)}
+                className={`w-full min-h-[300px]
+                      text-lg relative max-w-md rounded-2xl 
+                      text-left align-middle shadow-xl transition-all cursor-pointer flip-card pattern ${
+                        globalFont.className
+                      } ${isFlip ? "flipped" : ""}`}
+                style={{
+                  backgroundColor: flashCard.color,
+                  color: cc.contrastColor({ bgColor: flashCard.color }),
+                  border: `2px solid ${borderColor}`,
+                  "--card-color": flashCard.color,
+                  "--line-accent": lineColor.toString(),
+                }}
+              >
+                <div className="font-bold flip-card-front px-4 py-6">
+                  {flashCard.title}
+                </div>
+                <div
+                  className="font-bold flip-card-back px-4 pattern rounded-2xl py-6"
+                  style={{
+                    "--card-color": new Color(flashCard.color)
+                      .darken(0.05)
+                      .toString(),
+                    "--line-accent": lineColor.toString(),
+                  }}
+                >
+                  <p className="font-bold text-2xl underline mb-3">Answer</p>
+                  <span>{flashCard.content}</span>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  );
 }

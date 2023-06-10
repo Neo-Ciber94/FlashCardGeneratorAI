@@ -4,6 +4,7 @@ import { Transition, Dialog } from "@headlessui/react";
 import { useState, Fragment } from "react";
 import Color from "color";
 import { globalFont } from "../layout/Layout";
+import { twMerge } from "tailwind-merge";
 
 declare module "react" {
   interface CSSProperties {
@@ -14,9 +15,10 @@ declare module "react" {
 
 export interface FlashCardProps {
   flashCard: FlashCardModel;
+  className?: string;
 }
 
-export default function FlashCard({ flashCard }: FlashCardProps) {
+export default function FlashCard({ flashCard, className }: FlashCardProps) {
   const cc = new ContrastColor();
   const borderColor = new Color(flashCard.color).darken(0.05).fade(0.05);
   const [isOpen, setIsOpen] = useState(false);
@@ -30,10 +32,13 @@ export default function FlashCard({ flashCard }: FlashCardProps) {
     <>
       <div
         onClick={() => setIsOpen(true)}
-        className={`shadow-lg py-7 px-4 h-64 sm:w-52 w-10/12 mx-auto items-center justify-center rounded-lg
-        cursor-pointer transition-all duration-300 ${
-          isOpen ? "opacity-0 scale-105" : "opacity-100 scale-100 pattern"
-        }`}
+        className={twMerge(
+          `shadow-md py-7 px-4 h-64 w-full mx-auto items-center justify-center rounded-lg
+          cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-black/20 ${
+            isOpen ? "opacity-0 scale-105" : "opacity-100 scale-100 pattern"
+          }`,
+          className
+        )}
         style={{
           backgroundColor: flashCard.color,
           color: cc.contrastColor({ bgColor: flashCard.color }),
@@ -100,7 +105,13 @@ function FlashCardPreview({ flashCard, open, onClose }: FlashCardModalProps) {
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div
+            className="flex min-h-full items-center justify-center p-4 text-center"
+            style={{
+              perspective: "1000px",
+              transformStyle: "preserve-3d",
+            }}
+          >
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

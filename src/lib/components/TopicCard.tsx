@@ -28,8 +28,9 @@ export default function TopicCard({ topic }: TopicCardProps) {
 
         <div className="w-full">
           <hr />
-          <small className="mt-3 flex flex-row justify-end text-[10px] text-gray-400">
-            Last modified {dayjs(topic.lastModified).fromNow()}
+          <small className="mt-3 flex flex-row justify-between text-[10px] text-gray-400">
+            <span>4 cards</span>
+            <span>Last modified {dayjs(topic.lastModified).fromNow()}</span>
           </small>
         </div>
       </div>

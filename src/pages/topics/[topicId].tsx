@@ -47,7 +47,7 @@ export default function FlashCardPage({
   return (
     <>
       <Head>
-        <title>{PAGE_TITLE} | Topic</title>
+        <title>{`${PAGE_TITLE} | Topic`}</title>
       </Head>
 
       <div className="px-4 md:px-20 py-4">

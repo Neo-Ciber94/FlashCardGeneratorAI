@@ -34,7 +34,7 @@ export default function TopicListPage({
   return (
     <>
       <Head>
-        <title>{PAGE_TITLE} | Topics</title>
+        <title>{`${PAGE_TITLE} | Topics`}</title>
       </Head>
 
       <div className="px-4 md:px-20 py-4">

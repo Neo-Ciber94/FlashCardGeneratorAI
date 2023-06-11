@@ -29,7 +29,7 @@ export default function NewFlashCardPage() {
   return (
     <>
       <Head>
-        <title>{PAGE_TITLE} | New</title>
+        <title>{`${PAGE_TITLE} | New`}</title>
       </Head>
       <div className="mt-5 mx-4 sm:mx-10 lg:mx-28">
         <form>

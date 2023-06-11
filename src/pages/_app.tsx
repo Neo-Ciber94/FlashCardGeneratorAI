@@ -6,6 +6,7 @@ import Layout from "@/lib/layout/Layout";
 import { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import { PAGE_TITLE } from "@/lib/common/constants";
+import { Authenticator } from "@aws-amplify/ui-react";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,9 +15,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>{PAGE_TITLE}</title>
       </Head>
 
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Authenticator.Provider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Authenticator.Provider>
       <Toaster />
     </>
   );

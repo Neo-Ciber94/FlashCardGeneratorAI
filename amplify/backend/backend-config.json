@@ -34,6 +34,14 @@
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
+    "flashcardappflashcard": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "flashcardapptopic": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "flashcardtopic": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"

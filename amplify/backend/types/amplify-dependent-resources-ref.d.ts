@@ -13,24 +13,20 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "flashcard": {
+    "flashcardappflashcard": {
       "Arn": "string",
       "Name": "string",
       "PartitionKeyName": "string",
       "PartitionKeyType": "string",
       "Region": "string",
-      "SortKeyName": "string",
-      "SortKeyType": "string",
       "StreamArn": "string"
     },
-    "flashcardtopic": {
+    "flashcardapptopic": {
       "Arn": "string",
       "Name": "string",
       "PartitionKeyName": "string",
       "PartitionKeyType": "string",
       "Region": "string",
-      "SortKeyName": "string",
-      "SortKeyType": "string",
       "StreamArn": "string"
     }
   }

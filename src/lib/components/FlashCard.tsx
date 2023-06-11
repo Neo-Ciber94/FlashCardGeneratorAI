@@ -33,7 +33,7 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
       <div
         onClick={() => setIsOpen(true)}
         className={twMerge(
-          `shadow-md py-7 px-4 h-64 w-full mx-auto items-center justify-center rounded-lg
+          `shadow-md py-6 px-4 h-64 w-full mx-auto items-center justify-center rounded-lg
           cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-black/20 ${
             isOpen ? "opacity-0 scale-105" : "opacity-100 scale-100 pattern"
           }`,
@@ -47,7 +47,7 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
           "--line-accent": new Color(
             lineColor.contrastColor({ bgColor: flashCard.color })
           )
-            .fade(0.6)
+            .fade(0.4)
             .toString(),
         }}
       >
@@ -81,7 +81,7 @@ function FlashCardPreview({ flashCard, open, onClose }: FlashCardModalProps) {
   const lineColor = new Color(
     lineContrastColor.contrastColor({ bgColor: flashCard.color })
   )
-    .fade(0.6)
+    .fade(0.4)
     .toString();
 
   const handleClose = () => {

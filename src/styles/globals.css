@@ -3,24 +3,33 @@
 @tailwind utilities;
 
 @layer base {
+  :root,
+  body,
+  #__next {
+    @apply flex flex-col flex-1;
+    @apply h-auto min-h-full w-screen max-w-full;
+    @apply m-0 p-0;
+    @apply overflow-y-auto overflow-x-hidden;
+  }
+
   ::-webkit-scrollbar {
     @apply w-4;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-gray-100 shadow-inner shadow-gray-400
+    @apply bg-gray-100 shadow-inner shadow-gray-400;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-red-500 shadow-md;
+    @apply bg-gray-300 shadow-md;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-red-600;
+    @apply bg-gray-500;
   }
 
   ::-webkit-scrollbar-thumb:active {
-    @apply bg-red-700;
+    @apply bg-gray-600;
   }
 }
 
@@ -29,8 +38,8 @@
     height: 100%;
     background-image: repeating-linear-gradient(
       var(--card-color, white) 0px,
-      var(--card-color, white) 24px,
-      var(--line-accent, teal) 25px
+      var(--card-color, white) 23px,
+      var(--line-accent, teal) 24px
     );
   }
 

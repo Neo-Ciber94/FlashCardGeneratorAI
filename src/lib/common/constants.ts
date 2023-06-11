@@ -1,4 +1,4 @@
-export const FLASH_CARD_COLORS = [
+export const PASTEL_COLORS = [
     "#B2D3DB",
     "#A19DC4",
     "#E8B5D6",

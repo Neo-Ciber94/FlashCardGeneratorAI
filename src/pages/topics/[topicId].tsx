@@ -3,7 +3,7 @@ import { FlashCardModel } from "@/lib/models/flashcard";
 import { faker } from "@faker-js/faker";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { CubeIcon, PlusIcon } from "@heroicons/react/outline";
-import { FLASH_CARD_COLORS } from "@/lib/common/constants";
+import { PASTEL_COLORS } from "@/lib/common/constants";
 import Link from "next/link";
 
 export const getServerSideProps: GetServerSideProps<{
@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<{
       content: faker.lorem.paragraphs({ min: 1, max: 2 }),
       lastModified: faker.date.past({ years: 3 }).getTime(),
       owner: faker.string.uuid(),
-      color: faker.helpers.arrayElement(FLASH_CARD_COLORS),
+      color: faker.helpers.arrayElement(PASTEL_COLORS),
       isAiGenerated: false,
     }),
     {

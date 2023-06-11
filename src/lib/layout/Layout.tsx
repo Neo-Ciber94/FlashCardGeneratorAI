@@ -10,7 +10,7 @@ export const globalFont = Montserrat({
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
-    <div className={`flex flex-col justify-between h-full ${globalFont.className}`}>
+    <div className={`flex flex-col justify-between min-h-screen ${globalFont.className}`}>
       <Header />
       <main className="container h-full mx-auto flex-grow">{children}</main>
       <Footer />

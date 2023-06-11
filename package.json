@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^5.0.0",
-    "@aws-sdk/lib-dynamodb": "^3.350.0",
+    "@aws-sdk/client-dynamodb": "^3.350.0",
     "@faker-js/faker": "^8.0.2",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^1.0.6",

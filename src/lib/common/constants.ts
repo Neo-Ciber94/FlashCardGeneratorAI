@@ -1,11 +1,8 @@
 export const FLASH_CARD_COLORS = [
-    "#ff6961",
-    "#77dd77",
-    "#fdfd96",
-    "#84b6f4",
-    "#fdcae1",
-    "#7052ff",
-    "#ff7360",
-    "#ffff51",
-    "#d06aff",
+    "#B2D3DB",
+    "#A19DC4",
+    "#E8B5D6",
+    "#FFCCCC",
+    "#FFE7CF",
+    "#B6C7A7"
 ];

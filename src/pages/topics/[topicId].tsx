@@ -3,8 +3,9 @@ import { FlashCardModel } from "@/lib/models/flashcard";
 import { faker } from "@faker-js/faker";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { CubeIcon, PlusIcon } from "@heroicons/react/outline";
-import { PASTEL_COLORS } from "@/lib/common/constants";
+import { PAGE_TITLE, PASTEL_COLORS } from "@/lib/common/constants";
 import Link from "next/link";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps<{
   flashCards: FlashCardModel[];
@@ -44,39 +45,45 @@ export default function FlashCardPage({
   flashCards,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <div className="px-4 md:px-20 py-4">
-      <h1 className="font-bold text-3xl text-gray-700">
-        <span className="mr-2">Topic</span>
-        <span className="opacity-40">Flashcards</span>
-      </h1>
+    <>
+      <Head>
+        <title>{PAGE_TITLE} | Topic</title>
+      </Head>
 
-      <div className="my-2 flex flex-row justify-center sm:justify-end gap-2 mt-5">
-        <Link
-          href="/topics/flashcards/generate"
-          className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400"
-        >
-          <div className="w-5 h-5" style={{ transform: "rotateY(180deg)" }}>
-            <CubeIcon />
-          </div>
-          <span>Generate</span>
-        </Link>
+      <div className="px-4 md:px-20 py-4">
+        <h1 className="font-bold text-3xl text-gray-700">
+          <span className="mr-2">Topic</span>
+          <span className="opacity-40">Flashcards</span>
+        </h1>
 
-        <Link
-          href="/topics/flashcards/new"
-          className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400"
-        >
-          <div className="w-5 h-5">
-            <PlusIcon />
-          </div>
-          <span>Add New</span>
-        </Link>
+        <div className="my-2 flex flex-row justify-center sm:justify-end gap-2 mt-5">
+          <Link
+            href="/topics/flashcards/generate"
+            className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400"
+          >
+            <div className="w-5 h-5" style={{ transform: "rotateY(180deg)" }}>
+              <CubeIcon />
+            </div>
+            <span>Generate</span>
+          </Link>
+
+          <Link
+            href="/topics/flashcards/new"
+            className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400"
+          >
+            <div className="w-5 h-5">
+              <PlusIcon />
+            </div>
+            <span>Add New</span>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
+          {flashCards.map((flashCard) => {
+            return <FlashCard flashCard={flashCard} key={flashCard.id} />;
+          })}
+        </div>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
-        {flashCards.map((flashCard) => {
-          return <FlashCard flashCard={flashCard} key={flashCard.id} />;
-        })}
-      </div>
-    </div>
+    </>
   );
 }

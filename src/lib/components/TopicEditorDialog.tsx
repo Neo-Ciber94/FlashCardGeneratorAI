@@ -1,5 +1,5 @@
 import { Transition, Dialog } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -10,6 +10,7 @@ import {
 } from "../models/topic";
 import { toast } from "react-hot-toast";
 import { getErrorMessage, getResponseError } from "../utils/getErrorMessage";
+import { deferred } from "../utils/promises";
 
 export interface TopicEditorDialogProps {
   topic?: TopicModel;
@@ -35,6 +36,15 @@ export default function TopicEditorDialog({
   });
 
   const submit = async (input: CreateTopicModel) => {
+    const notifier = deferred<void>();
+    toast.promise(notifier.promise, {
+      loading: "Loading...",
+      success: topic
+        ? "Topic was updated successfully"
+        : "Topic was created successfully",
+      error: (msg) => msg,
+    });
+
     try {
       let res: Response;
 
@@ -56,19 +66,14 @@ export default function TopicEditorDialog({
 
       const json = await res.json();
       console.log(json);
+      notifier.resolve();
       reset();
-
-      if (topic) {
-        toast.success("Topic was updated successfully");
-      } else {
-        toast.success("Topic was created successfully");
-      }
 
       if (onSucceed) {
         onSucceed();
       }
     } catch (err) {
-      toast.error(getErrorMessage(err));
+      notifier.reject(getErrorMessage(err));
       console.log(err);
     } finally {
       onClose();

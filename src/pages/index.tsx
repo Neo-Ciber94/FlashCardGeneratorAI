@@ -3,15 +3,13 @@ import TopicEditorDialog from "@/lib/components/TopicEditorDialog";
 import TopicCard from "@/lib/components/TopicCard";
 import { TopicModel } from "@/lib/models/topic";
 import { TopicService } from "@/lib/services/topicService";
-import { ArchiveIcon, PlusIcon, TrashIcon } from "@heroicons/react/outline";
+import { ArchiveIcon, PlusIcon } from "@heroicons/react/outline";
 import { withSSRContext } from "aws-amplify";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import type { Auth } from "@aws-amplify/auth";
 import { useRefreshGetServerSideProps as useRefreshData } from "@/lib/hooks/useRefreshData";
-import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
 import ModalDialog from "@/lib/components/ModalDialog";
 
 export const getServerSideProps: GetServerSideProps<{
@@ -34,7 +32,6 @@ export default function TopicListPage({
   const [open, setOpen] = useState(false);
   const [deletingTopic, setDeletingTopic] = useState<TopicModel>();
   const [editingTopic, setEditingTopic] = useState<TopicModel>();
-  const router = useRouter();
   const refreshData = useRefreshData();
 
   return (
@@ -112,7 +109,7 @@ export default function TopicListPage({
           {
             name: "Delete",
             className:
-              "bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400",
+              "bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400 shadow-md rounded-md",
             onClick: (_, close) => {
               console.log("delete");
               close();

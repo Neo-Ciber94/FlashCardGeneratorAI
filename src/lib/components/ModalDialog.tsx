@@ -81,7 +81,7 @@ export default function ModalDialog({
                           key={idx}
                           onClick={(e) => action.onClick(e, onClose)}
                           className={twMerge(
-                            `min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md 
+                            `min-w-[150px] flex flex-row items-center gap-2 px-4 py-2 text-white 
                             ${
                               action.leading != null
                                 ? " justify-between"

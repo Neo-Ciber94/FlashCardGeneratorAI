@@ -13,19 +13,27 @@ dayjs.extend(relativeTime);
 
 export interface TopicCardProps {
   topic: TopicModel;
+  onEdit?: (topic: TopicModel) => void;
+  onDelete?: (topic: TopicModel) => void;
 }
 
-export default function TopicCard({ topic }: TopicCardProps) {
+export default function TopicCard({ topic, onEdit, onDelete }: TopicCardProps) {
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log("edit");
+
+    if (onEdit) {
+      onEdit(topic);
+    }
   };
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log("delete");
+
+    if (onDelete) {
+      onDelete(topic);
+    }
   };
 
   return (

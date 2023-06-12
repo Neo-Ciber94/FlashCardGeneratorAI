@@ -14,3 +14,10 @@ export const createTopicModel = z.object({
 });
 
 export type CreateTopicModel = z.infer<typeof createTopicModel>;
+
+export const updateTopicModel = z.object({
+    id: z.string(),
+    name: z.string().trim().min(4)
+});
+
+export type UpdateTopicModel = z.infer<typeof updateTopicModel>;

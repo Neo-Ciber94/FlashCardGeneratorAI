@@ -1,15 +1,17 @@
 import { PAGE_TITLE } from "@/lib/common/constants";
-import CreateTopicDialog from "@/lib/components/CreateTopicDialog";
+import TopicEditorDialog from "@/lib/components/TopicEditorDialog";
 import TopicCard from "@/lib/components/TopicCard";
 import { TopicModel } from "@/lib/models/topic";
 import { TopicService } from "@/lib/services/topicService";
-import { ArchiveIcon, PlusIcon } from "@heroicons/react/outline";
+import { ArchiveIcon, PlusIcon, TrashIcon } from "@heroicons/react/outline";
 import { withSSRContext } from "aws-amplify";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import type { Auth } from "@aws-amplify/auth";
 import { useRefreshGetServerSideProps } from "@/lib/hooks/useRefreshData";
+import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 
 export const getServerSideProps: GetServerSideProps<{
   topics: TopicModel[];
@@ -29,6 +31,8 @@ export default function TopicListPage({
   topics,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [open, setOpen] = useState(false);
+  const [editingTopic, setEditingTopic] = useState<TopicModel>();
+  const router = useRouter();
   const refreshData = useRefreshGetServerSideProps();
 
   return (
@@ -67,16 +71,61 @@ export default function TopicListPage({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4">
           {topics.map((topic) => {
-            return <TopicCard topic={topic} key={topic.id} />;
+            return (
+              <TopicCard
+                topic={topic}
+                key={topic.id}
+                onDelete={(topic) => {
+                  toast.custom(
+                    (t) => {
+                      return (
+                        <div className="p-2 rounded-md shadow border border-gray-200 bg-white mt-32">
+                          <p>Do you want to delete this topic?</p>
+
+                          <div>
+                            <button
+                              onClick={() => {
+                                toast.dismiss(t.id);
+                                console.log("delete");
+                              }}
+                              className="min-w-[150px] flex flex-row items-center gap-2 px-4 py-2 rounded-md text-red-500 hover:text-red-600"
+                            >
+                              <span>Delete</span>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    },
+                    {
+                      duration: Infinity,
+                    }
+                  );
+                }}
+                onEdit={(topic) => {
+                  setEditingTopic(topic);
+                  console.log("edit");
+                  setOpen(true);
+                }}
+              />
+            );
           })}
         </div>
       </div>
 
-      <CreateTopicDialog
-        open={open}
-        onClose={() => setOpen(false)}
-        afterAdd={() => refreshData()}
-      />
+      {open && (
+        <TopicEditorDialog
+          topic={editingTopic}
+          open={open}
+          onClose={() => {
+            setOpen(false);
+            setEditingTopic(undefined);
+          }}
+          onSucceed={() => {
+            refreshData();
+            setEditingTopic(undefined);
+          }}
+        />
+      )}
     </>
   );
 }

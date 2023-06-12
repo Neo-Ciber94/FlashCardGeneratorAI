@@ -2,36 +2,53 @@ import { Transition, Dialog } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateTopicModel, createTopicModel } from "../models/topic";
+import {
+  CreateTopicModel,
+  TopicModel,
+  createTopicModel,
+  updateTopicModel,
+} from "../models/topic";
 import { toast } from "react-hot-toast";
 import { getErrorMessage, getResponseError } from "../utils/getErrorMessage";
 
-export interface CreateTopicDialogProps {
+export interface TopicEditorDialogProps {
+  topic?: TopicModel;
   open: boolean;
   onClose: () => void;
-  afterAdd?: () => void;
+  onSucceed?: () => void;
 }
 
-export default function CreateTopicDialog({
+export default function TopicEditorDialog({
+  topic,
   open,
   onClose,
-  afterAdd,
-}: CreateTopicDialogProps) {
+  onSucceed,
+}: TopicEditorDialogProps) {
   const {
     reset,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateTopicModel>({
-    resolver: zodResolver(createTopicModel),
+    resolver: zodResolver(topic ? updateTopicModel : createTopicModel),
+    defaultValues: topic,
   });
 
   const submit = async (input: CreateTopicModel) => {
     try {
-      const res = await fetch("/api/topics", {
-        method: "POST",
-        body: JSON.stringify(input),
-      });
+      let res: Response;
+
+      if (topic) {
+        res = await fetch("/api/topics", {
+          method: "PUT",
+          body: JSON.stringify(input),
+        });
+      } else {
+        res = await fetch("/api/topics", {
+          method: "POST",
+          body: JSON.stringify(input),
+        });
+      }
 
       if (!res.ok) {
         throw new Error(await getResponseError(res));
@@ -40,10 +57,15 @@ export default function CreateTopicDialog({
       const json = await res.json();
       console.log(json);
       reset();
-      toast.success("Topic was created successfully");
 
-      if (afterAdd) {
-        afterAdd();
+      if (topic) {
+        toast.success("Topic was updated successfully");
+      } else {
+        toast.success("Topic was created successfully");
+      }
+
+      if (onSucceed) {
+        onSucceed();
       }
     } catch (err) {
       toast.error(getErrorMessage(err));

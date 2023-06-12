@@ -77,7 +77,7 @@ export default function TopicEditorDialog({
 
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog as="div" className="relative z-10" onClose={onClose} unmount>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

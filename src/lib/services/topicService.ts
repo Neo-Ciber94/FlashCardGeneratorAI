@@ -5,13 +5,31 @@ import { dynamoDb } from "../aws/dynamodb";
 
 export class TopicService {
     async getAll(userId: string): Promise<TopicModel[]> {
-        const result = await dynamoDb.scan({
+        const result = await dynamoDb.query({
             TableName: process.env.TOPIC_TABLE_NAME,
-            FilterExpression: "ownerId = :userId",
+            KeyConditionExpression: "ownerId = :userId",
             ExpressionAttributeValues: { ":userId": userId }
         })
 
         return result.Items as unknown as TopicModel[];
+    }
+
+    async getById(id: string, userId: string): Promise<TopicModel | null> {
+        const result = await dynamoDb.query({
+            TableName: process.env.TOPIC_TABLE_NAME,
+            Limit: 1,
+            FilterExpression: "id = :id AND ownerId = :userId",
+            ExpressionAttributeValues: {
+                ':id': id,
+                ':ownerId': userId
+            }
+        })
+
+        if (result.Items == null || result.Items.length === 0) {
+            return null;
+        }
+
+        return result.Items[0] as TopicModel;
     }
 
     async create(input: CreateTopicModel, userId: string): Promise<TopicModel> {
@@ -43,14 +61,9 @@ export class TopicService {
             throw new ServerError('BAD_REQUEST', result.error.message)
         }
 
-        const topicToUpdate = await dynamoDb.get({
-            Key: { id: input.id },
-            TableName: process.env.TOPIC_TABLE_NAME,
-        });
+        const topicToUpdate = await this.getById(input.id, userId);
 
-        const item = topicToUpdate.Item as TopicModel;
-
-        if (item == null || item.ownerId != userId) {
+        if (topicToUpdate == null || topicToUpdate.ownerId != userId) {
             throw new ServerError('NOT_FOUND')
         }
 
@@ -75,7 +88,7 @@ export class TopicService {
             TableName: process.env.TOPIC_TABLE_NAME,
         });
 
-        const item = topicToDelete.Item as TopicModel;
+        const item = await this.getById(id, userId);
 
         if (item == null || item?.ownerId != userId) {
             throw new ServerError('NOT_FOUND')

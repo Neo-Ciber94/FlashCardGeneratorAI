@@ -1,9 +1,14 @@
 {
     "tailwindCSS.experimental.classRegex": [
-        "(?:enter|leave)(?:From|To)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)",
+        [
+            "(?:enter|leave)(?:From|To)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)",
+        ],
         [
             "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]",
             "[`'\"`]([^'\"`,;]*)[`'\"`]"
+        ],
+        [
+            ":\\s*?[\"'`]([^\"'`]*).*?,"
         ]
     ],
     "dotenv.enableAutocloaking": false

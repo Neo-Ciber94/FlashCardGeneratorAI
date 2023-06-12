@@ -6,7 +6,7 @@ export const flashCardModel = z.object({
     topicId: z.string(),
     content: z.string(),
     color: z.string(),
-    owner: z.string(),
+    ownerId: z.string(),
     lastModified: z.number().positive(),
     isAiGenerated: z.boolean().default(false),
 })

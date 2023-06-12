@@ -9,9 +9,10 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import type { Auth } from "@aws-amplify/auth";
-import { useRefreshGetServerSideProps } from "@/lib/hooks/useRefreshData";
+import { useRefreshGetServerSideProps as useRefreshData } from "@/lib/hooks/useRefreshData";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
+import ModalDialog from "@/lib/components/ModalDialog";
 
 export const getServerSideProps: GetServerSideProps<{
   topics: TopicModel[];
@@ -31,9 +32,10 @@ export default function TopicListPage({
   topics,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [open, setOpen] = useState(false);
+  const [deletingTopic, setDeletingTopic] = useState<TopicModel>();
   const [editingTopic, setEditingTopic] = useState<TopicModel>();
   const router = useRouter();
-  const refreshData = useRefreshGetServerSideProps();
+  const refreshData = useRefreshData();
 
   return (
     <>
@@ -76,30 +78,7 @@ export default function TopicListPage({
                 topic={topic}
                 key={topic.id}
                 onDelete={(topic) => {
-                  toast.custom(
-                    (t) => {
-                      return (
-                        <div className="p-2 rounded-md shadow border border-gray-200 bg-white mt-32">
-                          <p>Do you want to delete this topic?</p>
-
-                          <div>
-                            <button
-                              onClick={() => {
-                                toast.dismiss(t.id);
-                                console.log("delete");
-                              }}
-                              className="min-w-[150px] flex flex-row items-center gap-2 px-4 py-2 rounded-md text-red-500 hover:text-red-600"
-                            >
-                              <span>Delete</span>
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    },
-                    {
-                      duration: Infinity,
-                    }
-                  );
+                  setDeletingTopic(topic);
                 }}
                 onEdit={(topic) => {
                   setEditingTopic(topic);
@@ -112,20 +91,39 @@ export default function TopicListPage({
         </div>
       </div>
 
-      {open && (
-        <TopicEditorDialog
-          topic={editingTopic}
-          open={open}
-          onClose={() => {
-            setOpen(false);
-            setEditingTopic(undefined);
-          }}
-          onSucceed={() => {
-            refreshData();
-            setEditingTopic(undefined);
-          }}
-        />
-      )}
+      <TopicEditorDialog
+        topic={editingTopic}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          setEditingTopic(undefined);
+        }}
+        onSucceed={() => {
+          refreshData();
+          setEditingTopic(undefined);
+        }}
+      />
+
+      <ModalDialog
+        title="Delete Topic?"
+        open={Boolean(deletingTopic)}
+        onClose={() => setDeletingTopic(undefined)}
+        actions={[
+          {
+            name: "Delete",
+            className:
+              "bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400",
+            onClick: (_, close) => {
+              console.log("delete");
+              close();
+            },
+          },
+        ]}
+      >
+        <div className="py-2">
+          <span>Are you sure do you want to delete this topic?</span>
+        </div>
+      </ModalDialog>
     </>
   );
 }

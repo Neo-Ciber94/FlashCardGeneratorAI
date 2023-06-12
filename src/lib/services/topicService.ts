@@ -4,8 +4,13 @@ import { ServerError } from "../utils/error";
 import { dynamoDb } from "../aws/dynamodb";
 
 export class TopicService {
-    async getAll(): Promise<TopicModel[]> {
-        const result = await dynamoDb.scan({ TableName: process.env.TOPIC_TABLE_NAME })
+    async getAll(userId: string): Promise<TopicModel[]> {
+        const result = await dynamoDb.scan({
+            TableName: process.env.TOPIC_TABLE_NAME,
+            FilterExpression: "ownerId = :userId",
+            ExpressionAttributeValues: { ":userId": userId }
+        })
+
         return result.Items as unknown as TopicModel[];
     }
 
@@ -20,7 +25,7 @@ export class TopicService {
             id: crypto.randomUUID(),
             name: result.data.name,
             lastModified: new Date().getTime(),
-            owner: userId
+            ownerId: userId
         };
 
         await dynamoDb.put({

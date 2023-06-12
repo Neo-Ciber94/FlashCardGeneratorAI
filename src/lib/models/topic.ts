@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const topicModel = z.object({
     id: z.string(),
     name: z.string().trim(),
-    owner: z.string(),
+    ownerId: z.string(),
     lastModified: z.number().positive()
 })
 

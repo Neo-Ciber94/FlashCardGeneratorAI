@@ -4,17 +4,21 @@ import TopicCard from "@/lib/components/TopicCard";
 import { TopicModel } from "@/lib/models/topic";
 import { TopicService } from "@/lib/services/topicService";
 import { ArchiveIcon, PlusIcon } from "@heroicons/react/outline";
+import { withSSRContext } from "aws-amplify";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import type { Auth } from "@aws-amplify/auth";
+import { useRefreshGetServerSideProps } from "@/lib/hooks/useRefreshData";
 
 export const getServerSideProps: GetServerSideProps<{
   topics: TopicModel[];
-}> = async ({ req }) => {
+}> = async (context) => {
+  const amplifyContext = withSSRContext(context);
+  const auth = amplifyContext.Auth as typeof Auth;
+  const user = await auth.currentAuthenticatedUser();
   const topicService = new TopicService();
-  const topics = await topicService.getAll();
-
-  console.log(req.headers);
+  const topics = await topicService.getAll(user.username);
 
   return {
     props: { topics },
@@ -25,6 +29,7 @@ export default function TopicListPage({
   topics,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [open, setOpen] = useState(false);
+  const refreshData = useRefreshGetServerSideProps();
 
   return (
     <>
@@ -67,7 +72,11 @@ export default function TopicListPage({
         </div>
       </div>
 
-      <CreateTopicDialog open={open} onClose={() => setOpen(false)} />
+      <CreateTopicDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        afterAdd={() => refreshData()}
+      />
     </>
   );
 }

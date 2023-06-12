@@ -5,17 +5,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateTopicModel, createTopicModel } from "../models/topic";
 import { toast } from "react-hot-toast";
 import { getErrorMessage, getResponseError } from "../utils/getErrorMessage";
-import { useAuthenticator } from "@aws-amplify/ui-react";
-import { Auth } from "aws-amplify";
 
 export interface CreateTopicDialogProps {
   open: boolean;
   onClose: () => void;
+  afterAdd?: () => void;
 }
 
 export default function CreateTopicDialog({
   open,
   onClose,
+  afterAdd
 }: CreateTopicDialogProps) {
   const {
     register,
@@ -27,15 +27,9 @@ export default function CreateTopicDialog({
 
   const submit = async (input: CreateTopicModel) => {
     try {
-      const session = await Auth.currentSession();
-      const token = session.getIdToken();
-
       const res = await fetch("/api/topics", {
         method: "POST",
         body: JSON.stringify(input),
-        headers: {
-          Authorization: `Bearer ${token.getJwtToken()}`,
-        },
       });
 
       if (!res.ok) {
@@ -45,6 +39,10 @@ export default function CreateTopicDialog({
       const json = await res.json();
       console.log(json);
       toast.success("Topic was created successfully");
+
+      if (afterAdd) {
+        afterAdd();
+      }
     } catch (err) {
       toast.error(getErrorMessage(err));
       console.log(err);

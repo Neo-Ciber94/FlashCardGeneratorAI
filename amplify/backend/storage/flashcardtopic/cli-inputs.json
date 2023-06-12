@@ -1,22 +1,10 @@
 {
   "resourceName": "flashcardtopic",
-  "tableName": "topic",
+  "tableName": "flashcardtopic",
   "partitionKey": {
     "fieldName": "id",
     "fieldType": "string"
   },
-  "sortKey": {
-    "fieldName": "lastModified",
-    "fieldType": "number"
-  },
-  "gsi": [
-    {
-      "name": "topicOwnerIndex",
-      "partitionKey": {
-        "fieldName": "owner",
-        "fieldType": "string"
-      }
-    }
-  ],
+  "gsi": [],
   "triggerFunctions": []
 }

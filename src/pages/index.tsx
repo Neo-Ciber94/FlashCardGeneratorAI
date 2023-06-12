@@ -1,30 +1,19 @@
 import { PAGE_TITLE } from "@/lib/common/constants";
 import TopicCard from "@/lib/components/TopicCard";
 import { TopicModel } from "@/lib/models/topic";
-import { faker } from "@faker-js/faker";
-import { PlusIcon } from "@heroicons/react/outline";
+import { TopicService } from "@/lib/services/topicService";
+import { ArchiveIcon, PlusIcon } from "@heroicons/react/outline";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps<{
   topics: TopicModel[];
 }> = async () => {
-  faker.seed(299);
-
-  const topics: TopicModel[] = faker.helpers.multiple(
-    () => ({
-      id: faker.string.uuid(),
-      name: faker.word.verb(),
-      owner: "fake-user-id",
-      lastModified: faker.date.past({ years: 4 }).getTime(),
-    }),
-    { count: 7 }
-  );
+  const topicService = new TopicService();
+  const topics = await topicService.getAll();
 
   return {
-    props: {
-      topics,
-    },
+    props: { topics },
   };
 };
 
@@ -50,6 +39,17 @@ export default function TopicListPage({
             <span>New Topic</span>
           </button>
         </div>
+
+        {topics.length === 0 && (
+          <div className="text-center text-4xl text-gray-300 my-12">
+            <div className="flex flex-row gap-3 justify-center items-center">
+              <div className="w-12 h-12">
+                <ArchiveIcon />
+              </div>
+              <span>No Topics</span>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 mt-4">
           {topics.map((topic) => {

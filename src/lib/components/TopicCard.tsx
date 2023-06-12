@@ -20,16 +20,14 @@ export default function TopicCard({ topic }: TopicCardProps) {
           <div className="w-8 h-8 text-red-500 flex-grow-0 flex-shrink-0">
             <DocumentDuplicateIcon />
           </div>
-          <p className="text-black">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor,
-            voluptate magnam.
-          </p>
+          <p className="text-black">{topic.name}</p>
         </div>
 
         <div className="w-full">
           <hr />
           <small className="mt-3 flex flex-row justify-between text-[10px] text-gray-400">
-            <span>4 cards</span>
+            {/* <span>4 cards</span> */}
+            <span></span>
             <span>Last modified {dayjs(topic.lastModified).fromNow()}</span>
           </small>
         </div>

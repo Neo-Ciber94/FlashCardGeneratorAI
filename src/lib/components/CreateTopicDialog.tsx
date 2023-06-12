@@ -15,9 +15,10 @@ export interface CreateTopicDialogProps {
 export default function CreateTopicDialog({
   open,
   onClose,
-  afterAdd
+  afterAdd,
 }: CreateTopicDialogProps) {
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -38,6 +39,7 @@ export default function CreateTopicDialog({
 
       const json = await res.json();
       console.log(json);
+      reset();
       toast.success("Topic was created successfully");
 
       if (afterAdd) {

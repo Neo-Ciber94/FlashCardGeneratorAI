@@ -11,6 +11,9 @@ import { useState } from "react";
 import type { Auth } from "@aws-amplify/auth";
 import { useRefreshGetServerSideProps as useRefreshData } from "@/lib/hooks/useRefreshData";
 import ModalDialog from "@/lib/components/ModalDialog";
+import { deferred } from "@/lib/utils/promises";
+import toast from "react-hot-toast";
+import { getErrorMessage, getResponseError } from "@/lib/utils/getErrorMessage";
 
 export const getServerSideProps: GetServerSideProps<{
   topics: TopicModel[];
@@ -79,7 +82,6 @@ export default function TopicListPage({
                 }}
                 onEdit={(topic) => {
                   setEditingTopic(topic);
-                  console.log("edit");
                   setOpen(true);
                 }}
               />
@@ -110,8 +112,42 @@ export default function TopicListPage({
             name: "Delete",
             className:
               "bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400 shadow-md rounded-md",
-            onClick: (_, close) => {
-              console.log("delete");
+            onClick: async (_, close) => {
+              const notifier = deferred<void>();
+              toast.promise(notifier.promise, {
+                loading: "Loading...",
+                success: "Topic was deleted",
+                error: (msg) => msg,
+              });
+
+              if (deletingTopic == null) {
+                throw new Error("no topic to delete");
+              }
+
+              try {
+                const res = await fetch(`/api/topics/${deletingTopic.id}`, {
+                  method: "DELETE",
+                });
+
+                if (!res.ok) {
+                  throw new Error(await getResponseError(res));
+                }
+
+                notifier.resolve();
+                refreshData();
+              } catch (err) {
+                notifier.reject(getErrorMessage(err));
+                console.error(err);
+              } finally {
+                close();
+              }
+            },
+          },
+          {
+            name: "Cancel",
+            className:
+              "bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-400 shadow-md rounded-md",
+            onClick(_, close) {
               close();
             },
           },

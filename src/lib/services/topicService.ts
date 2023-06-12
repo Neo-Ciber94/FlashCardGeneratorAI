@@ -18,10 +18,12 @@ export class TopicService {
         const result = await dynamoDb.query({
             TableName: process.env.TOPIC_TABLE_NAME,
             Limit: 1,
-            FilterExpression: "id = :id AND ownerId = :userId",
+            IndexName: "topicIdIndex",
+            KeyConditionExpression: "id = :id",
+            FilterExpression: "ownerId = :userId",
             ExpressionAttributeValues: {
                 ':id': id,
-                ':ownerId': userId
+                ':userId': userId
             }
         })
 
@@ -83,11 +85,6 @@ export class TopicService {
     }
 
     async delete(id: string, userId: string): Promise<TopicModel> {
-        const topicToDelete = await dynamoDb.get({
-            Key: { id },
-            TableName: process.env.TOPIC_TABLE_NAME,
-        });
-
         const item = await this.getById(id, userId);
 
         if (item == null || item?.ownerId != userId) {
@@ -95,15 +92,12 @@ export class TopicService {
         }
 
         await dynamoDb.delete({
-            Key: { id },
+            Key: { ownerId: userId, lastModified: item.lastModified },
             TableName: process.env.TOPIC_TABLE_NAME,
-            ConditionExpression: "userId = :userId",
-            ExpressionAttributeValues: {
-                ":userId": userId
-            }
+
         });
 
-        return topicToDelete.Item as TopicModel;
+        return item as TopicModel;
     }
 }
 

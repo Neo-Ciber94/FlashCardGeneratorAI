@@ -1,15 +1,9 @@
-import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { FlashCardModel } from "../models/flashcard";
+import { dynamoDb } from "../aws/dynamodb";
 
 export class FlashcardService {
-    private client = new DynamoDBClient({});
-
-    async getAll() : Promise<FlashCardModel[]> {
-        const command = new ScanCommand({
-            TableName: process.env.FLASHCARD_TABLE_NAME
-        });
-
-        const result = await this.client.send(command);
+    async getAll(): Promise<FlashCardModel[]> {
+        const result = await dynamoDb.scan({ TableName: process.env.FLASHCARD_TABLE_NAME });
         return result.Items as unknown as FlashCardModel[];
     }
 }

@@ -1,16 +1,20 @@
 import { PAGE_TITLE } from "@/lib/common/constants";
+import CreateTopicDialog from "@/lib/components/CreateTopicDialog";
 import TopicCard from "@/lib/components/TopicCard";
 import { TopicModel } from "@/lib/models/topic";
 import { TopicService } from "@/lib/services/topicService";
 import { ArchiveIcon, PlusIcon } from "@heroicons/react/outline";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
+import { useState } from "react";
 
 export const getServerSideProps: GetServerSideProps<{
   topics: TopicModel[];
-}> = async () => {
+}> = async ({ req }) => {
   const topicService = new TopicService();
   const topics = await topicService.getAll();
+
+  console.log(req.headers);
 
   return {
     props: { topics },
@@ -20,6 +24,8 @@ export const getServerSideProps: GetServerSideProps<{
 export default function TopicListPage({
   topics,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <Head>
@@ -32,7 +38,10 @@ export default function TopicListPage({
         </h1>
 
         <div className="my-2 flex flex-row justify-center sm:justify-end gap-2 mt-5">
-          <button className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400">
+          <button
+            onClick={() => setOpen(true)}
+            className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400"
+          >
             <div className="w-5 h-5">
               <PlusIcon />
             </div>
@@ -57,6 +66,8 @@ export default function TopicListPage({
           })}
         </div>
       </div>
+
+      <CreateTopicDialog open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

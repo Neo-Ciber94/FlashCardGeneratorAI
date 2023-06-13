@@ -140,7 +140,7 @@ function FlashCardPreview({ flashCard, open, onClose }: FlashCardModalProps) {
                   {flashCard.title}
                 </div>
                 <div
-                  className="font-bold flip-card-back px-4 pattern rounded-2xl py-6"
+                  className="font-bold flip-card-back px-4 pattern rounded-2xl py-6 w-full"
                   style={{
                     "--card-color": new Color(flashCard.color)
                       .darken(0.05)

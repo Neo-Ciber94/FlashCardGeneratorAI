@@ -5,12 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateTopicModel,
   TopicModel,
+  UpdateTopicModel,
   createTopicModel,
   updateTopicModel,
 } from "../models/topic";
 import { toast } from "react-hot-toast";
 import { getErrorMessage, getResponseError } from "../utils/getErrorMessage";
 import { deferred } from "../utils/promises";
+
+type TopicInput = CreateTopicModel | UpdateTopicModel;
 
 export interface TopicEditorDialogProps {
   topic?: TopicModel;
@@ -30,7 +33,7 @@ export default function TopicEditorDialog({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateTopicModel>({
+  } = useForm<TopicInput>({
     resolver: zodResolver(topic ? updateTopicModel : createTopicModel),
     defaultValues: topic,
   });

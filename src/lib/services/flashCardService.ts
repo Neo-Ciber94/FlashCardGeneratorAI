@@ -28,6 +28,26 @@ export class FlashcardService {
         return { flashCards, topic }
     }
 
+    async getById(topicId: string, flashCardId: string, userId: string): Promise<FlashCardModel | null> {
+        const result = await dynamoDb.query({
+            TableName: process.env.FLASHCARD_TABLE_NAME,
+            IndexName: "flashCardIndexId",
+            KeyConditionExpression: "id = :id",
+            FilterExpression: "topicId = :topicId and ownerId = :userId",
+            ExpressionAttributeValues: {
+                ':id': flashCardId,
+                ':topicId': topicId,
+                ':userId': userId
+            }
+        })
+
+        if (result.Items == null || result.Items.length == 0) {
+            return null;
+        }
+
+        return result.Items[0] as FlashCardModel;
+    }
+
     async create(createInput: CreateFlashCardModel, userId: string): Promise<FlashCardModel> {
         const parsed = createFlashCardModel.safeParse(createInput);
 

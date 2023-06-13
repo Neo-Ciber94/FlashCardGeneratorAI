@@ -54,7 +54,7 @@ export default function FlashCardPage({
 
         <div className="my-2 flex flex-row justify-center sm:justify-end gap-2 mt-5">
           <Link
-            href="/topics/flashcards/generate"
+            href={`/topics/${topic.id}/flashcards/generate`}
             className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400"
           >
             <div className="w-5 h-5" style={{ transform: "rotateY(180deg)" }}>
@@ -64,7 +64,7 @@ export default function FlashCardPage({
           </Link>
 
           <Link
-            href="/topics/flashcards/new"
+            href={`/topics/${topic.id}/flashcards/new`}
             className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400"
           >
             <div className="w-5 h-5">

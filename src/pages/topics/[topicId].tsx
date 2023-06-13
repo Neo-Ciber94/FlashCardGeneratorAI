@@ -1,60 +1,56 @@
 import FlashCard from "@/lib/components/FlashCard";
 import { FlashCardModel } from "@/lib/models/flashcard";
-import { faker } from "@faker-js/faker";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { CubeIcon, PlusIcon } from "@heroicons/react/outline";
-import { PAGE_TITLE, PASTEL_COLORS } from "@/lib/common/constants";
+import { CubeIcon, PlusIcon, ArchiveIcon } from "@heroicons/react/outline";
+import { PAGE_TITLE } from "@/lib/common/constants";
 import Link from "next/link";
 import Head from "next/head";
+import { FlashcardService } from "@/lib/services/flashCardService";
+import type { Auth } from "@aws-amplify/auth";
+import { withSSRContext } from "aws-amplify";
+import { TopicModel } from "@/lib/models/topic";
 
-export const getServerSideProps: GetServerSideProps<{
-  flashCards: FlashCardModel[];
-}> = async ({ params }) => {
-  faker.seed(Math.random() * 1000);
+type TopicFlashCardParam = { flashCards: FlashCardModel[]; topic: TopicModel };
 
-  const topicId = params?.topicId;
+export const getServerSideProps: GetServerSideProps<
+  TopicFlashCardParam
+> = async (context) => {
+  const topicId = context.params?.topicId;
 
   if (typeof topicId !== "string") {
     throw new Error("Invalid topic id");
   }
 
-  const flashCards: FlashCardModel[] = faker.helpers.multiple(
-    () => ({
-      topicId,
-      id: faker.string.uuid(),
-      title: faker.word.words({ count: faker.number.int({ min: 3, max: 8 }) }),
-      content: faker.lorem.paragraphs({ min: 1, max: 2 }),
-      lastModified: faker.date.past({ years: 3 }).getTime(),
-      ownerId: faker.string.uuid(),
-      color: faker.helpers.arrayElement(PASTEL_COLORS),
-      isAiGenerated: false,
-    }),
-    {
-      count: Math.ceil(Math.random() * 30),
-    }
+  const amplifyContext = withSSRContext(context);
+  const auth = amplifyContext.Auth as typeof Auth;
+  const user = await auth.currentAuthenticatedUser();
+
+  const flashCardService = new FlashcardService();
+  const { flashCards, topic } = await flashCardService.getAll(
+    topicId,
+    user.username
   );
 
   return {
     props: {
       flashCards,
+      topic,
     },
   };
 };
 
 export default function FlashCardPage({
   flashCards,
+  topic,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <Head>
-        <title>{`${PAGE_TITLE} | Topic`}</title>
+        <title>{`${PAGE_TITLE} | ${topic.name}`}</title>
       </Head>
 
       <div className="px-4 md:px-20 py-4">
-        <h1 className="font-bold text-3xl text-gray-700">
-          <span className="mr-2">Topic</span>
-          <span className="opacity-40">Flashcards</span>
-        </h1>
+        <h1 className="font-bold text-xl text-gray-700">{topic.name}</h1>
 
         <div className="my-2 flex flex-row justify-center sm:justify-end gap-2 mt-5">
           <Link
@@ -77,6 +73,17 @@ export default function FlashCardPage({
             <span>Add New</span>
           </Link>
         </div>
+
+        {flashCards.length === 0 && (
+          <div className="text-center text-4xl text-gray-300 mt-20">
+            <div className="flex flex-row gap-3 justify-center items-center">
+              <div className="w-12 h-12">
+                <ArchiveIcon />
+              </div>
+              <span>No FlashCards</span>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
           {flashCards.map((flashCard) => {

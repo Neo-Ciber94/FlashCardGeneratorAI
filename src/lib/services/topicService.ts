@@ -35,25 +35,27 @@ export class TopicService {
     }
 
     async create(input: CreateTopicModel, userId: string): Promise<TopicModel> {
-        const result = createTopicModel.safeParse(input);
+        const parsed = createTopicModel.safeParse(input);
 
-        if (result.success === false) {
-            throw new ServerError('BAD_REQUEST', result.error.message)
+        if (parsed.success === false) {
+            throw new ServerError('BAD_REQUEST', parsed.error.message)
         }
 
-        const data: TopicModel = {
+        const { data } = parsed;
+
+        const item: TopicModel = {
             id: crypto.randomUUID(),
-            name: result.data.name,
+            name: data.name,
             lastModified: Date.now(),
             ownerId: userId
         };
 
         await dynamoDb.put({
-            Item: data,
+            Item: item,
             TableName: process.env.TOPIC_TABLE_NAME,
         });
 
-        return data;
+        return item;
     }
 
     async update(input: UpdateTopicModel, userId: string): Promise<TopicModel> {

@@ -1,4 +1,4 @@
-import { CreateFlashCardModel, FlashCardModel, createFlashCardModel } from "../models/flashcard";
+import { CreateFlashCardModel, FlashCardModel, UpdateFlashCardModel, createFlashCardModel, updateFlashCardModel } from "../models/flashcard";
 import { dynamoDb } from "../aws/dynamodb";
 import { ServerError } from "../utils/error";
 import crypto from 'crypto';
@@ -31,7 +31,7 @@ export class FlashcardService {
     async getById(topicId: string, flashCardId: string, userId: string): Promise<FlashCardModel | null> {
         const result = await dynamoDb.query({
             TableName: process.env.FLASHCARD_TABLE_NAME,
-            IndexName: "flashCardIndexId",
+            IndexName: "flashCardIdIndex",
             KeyConditionExpression: "id = :id",
             FilterExpression: "topicId = :topicId and ownerId = :userId",
             ExpressionAttributeValues: {
@@ -71,6 +71,35 @@ export class FlashcardService {
             TableName: process.env.FLASHCARD_TABLE_NAME,
             Item: item
         })
+
+        return item;
+    }
+
+    async update(updateInput: UpdateFlashCardModel, userId: string): Promise<FlashCardModel> {
+        const result = updateFlashCardModel.safeParse(updateInput);
+
+        if (result.success === false) {
+            throw new ServerError('BAD_REQUEST', result.error.message)
+        }
+
+        const flashCardToUpdate = await this.getById(result.data.topicId, result.data.id, userId);
+
+        if (flashCardToUpdate == null || flashCardToUpdate.ownerId != userId) {
+            throw new ServerError('NOT_FOUND')
+        }
+
+        const { data } = result;
+        const item: FlashCardModel = {
+            ...data,
+            ownerId: userId,
+            isAiGenerated: flashCardToUpdate.isAiGenerated,
+            lastModified: Date.now()
+        };
+
+        await dynamoDb.put({
+            Item: item,
+            TableName: process.env.FLASHCARD_TABLE_NAME,
+        });
 
         return item;
     }

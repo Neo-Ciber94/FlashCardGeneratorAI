@@ -1,5 +1,3 @@
-
-
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSSRContext } from "aws-amplify";
 import type { Auth } from '@aws-amplify/auth';
@@ -25,12 +23,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 res.send(result);
                 break;
             }
-            // case 'PUT': {
-            //     const input = JSON.parse(req.body);
-            //     const result = await service.update(input, userName);
-            //     res.send(result);
-            //     break;
-            // }
+            case 'PUT': {
+                const input = JSON.parse(req.body);
+                const result = await service.update(input, userName);
+                res.send(result);
+                break;
+            }
             default:
                 res.status(405).end()
                 break;

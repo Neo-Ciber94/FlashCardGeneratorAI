@@ -17,6 +17,7 @@ export const getServerSideProps: GetServerSideProps<{
   const topicId = String(context.params?.topicId);
   const flashCardId = String(context.params?.id);
 
+  console.log({ topicId, flashCardId });
   const amplifyContext = withSSRContext(context);
   const auth = amplifyContext.Auth as typeof Auth;
   const user = await auth.currentAuthenticatedUser();
@@ -82,7 +83,7 @@ export default function EditFlashCardPage({
   return (
     <>
       <Head>
-        <title>{`${PAGE_TITLE} | New`}</title>
+        <title>{`${PAGE_TITLE} | Edit`}</title>
       </Head>
       <div className="mt-5 mx-4 sm:mx-10 lg:mx-28">
         <FlashCardEditor

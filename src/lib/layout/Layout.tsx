@@ -12,8 +12,12 @@ export const globalFont = Montserrat({
 });
 
 export default function Layout({ children }: PropsWithChildren) {
-  const { user } = useAuthenticator((context) => [context.user]);
+  const { user, isPending } = useAuthenticator((context) => [context.user]);
   const router = useRouter();
+
+  if (isPending) {
+    return "Loading..."
+  }
 
   return (
     <div

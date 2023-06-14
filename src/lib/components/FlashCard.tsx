@@ -5,6 +5,9 @@ import { useState, Fragment } from "react";
 import Color from "color";
 import { globalFont } from "../layout/Layout";
 import { twMerge } from "tailwind-merge";
+import ContextMenu from "./ContextMenu";
+import { PencilIcon, TrashIcon } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
 
 declare module "react" {
   interface CSSProperties {
@@ -19,6 +22,7 @@ export interface FlashCardProps {
 }
 
 export default function FlashCard({ flashCard, className }: FlashCardProps) {
+  const router = useRouter();
   const cc = new ContrastColor();
   const borderColor = new Color(flashCard.color).darken(0.05).fade(0.05);
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +37,7 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
       <div
         onClick={() => setIsOpen(true)}
         className={twMerge(
-          `shadow-md py-6 px-4 h-64 w-full mx-auto items-center justify-center rounded-lg
+          `relative shadow-md py-6 px-4 h-64 w-full mx-auto items-center justify-center rounded-lg
           cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-black/20 ${
             isOpen ? "opacity-0 scale-105" : "opacity-100 scale-100 pattern"
           }`,
@@ -51,6 +55,35 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
             .toString(),
         }}
       >
+        <div className="absolute flex flex-row justify-end right-1 top-0">
+          <ContextMenu
+            items={[
+              {
+                name: "Edit",
+                onClick: () => {
+                  router.push(
+                    `/topics/${flashCard.topicId}/flashcards/edit/${flashCard.id}`
+                  );
+                },
+                leading: (
+                  <div className="h-5 w-5 text-red-500">
+                    <PencilIcon />
+                  </div>
+                ),
+              },
+              {
+                name: "Delete",
+                onClick: console.log,
+                leading: (
+                  <div className="h-5 w-5 text-red-500">
+                    <TrashIcon />
+                  </div>
+                ),
+              },
+            ]}
+          />
+        </div>
+
         <div className="font-bold text-base">{flashCard.title}</div>
       </div>
 

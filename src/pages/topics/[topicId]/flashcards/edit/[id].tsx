@@ -16,8 +16,6 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (context) => {
   const topicId = String(context.params?.topicId);
   const flashCardId = String(context.params?.id);
-
-  console.log({ topicId, flashCardId });
   const amplifyContext = withSSRContext(context);
   const auth = amplifyContext.Auth as typeof Auth;
   const user = await auth.currentAuthenticatedUser();

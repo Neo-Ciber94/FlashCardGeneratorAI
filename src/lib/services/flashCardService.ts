@@ -96,6 +96,13 @@ export class FlashcardService {
             lastModified: Date.now()
         };
 
+        // FIXME: We are doing two operations to update, we need to rethink the keys
+
+        await dynamoDb.delete({
+            Key: { ownerId: userId, lastModified: flashCardToUpdate.lastModified },
+            TableName: process.env.FLASHCARD_TABLE_NAME
+        })
+
         await dynamoDb.put({
             Item: item,
             TableName: process.env.FLASHCARD_TABLE_NAME,

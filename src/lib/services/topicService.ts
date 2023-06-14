@@ -78,6 +78,13 @@ export class TopicService {
             lastModified: Date.now()
         };
 
+        // FIXME: We are doing two operations to update, we need to rethink the keys
+
+        await dynamoDb.delete({
+            Key: { ownerId: userId, lastModified: topicToUpdate.lastModified },
+            TableName: process.env.FLASHCARD_TABLE_NAME
+        })
+
         await dynamoDb.put({
             Item: data,
             TableName: process.env.TOPIC_TABLE_NAME,

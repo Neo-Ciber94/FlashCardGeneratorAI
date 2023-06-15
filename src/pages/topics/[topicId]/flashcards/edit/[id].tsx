@@ -6,20 +6,15 @@ import { getErrorMessage, getResponseError } from "@/lib/utils/getErrorMessage";
 import { deferred } from "@/lib/utils/promises";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { withSSRContext } from "aws-amplify";
+import { InferGetServerSidePropsType } from "next";
 import { FlashcardService } from "@/lib/services/flashCardService";
-import type { Auth } from "@aws-amplify/auth";
+import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
 
-export const getServerSideProps: GetServerSideProps<{
+export const getServerSideProps = withAuthGetServerSideProps<{
   flashCard: FlashCardModel;
-}> = async (context) => {
+}>(async (user, context) => {
   const topicId = String(context.params?.topicId);
   const flashCardId = String(context.params?.id);
-  const amplifyContext = withSSRContext(context);
-  const auth = amplifyContext.Auth as typeof Auth;
-  const user = await auth.currentAuthenticatedUser();
-
   const flashCardService = new FlashcardService();
   const flashCard = await flashCardService.getById(
     topicId,
@@ -38,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<{
       flashCard,
     },
   };
-};
+});
 
 export default function EditFlashCardPage({
   flashCard,

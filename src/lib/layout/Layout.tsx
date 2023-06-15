@@ -16,16 +16,16 @@ export default function Layout({ children }: PropsWithChildren) {
   const router = useRouter();
 
   if (isPending) {
-    return "Loading..."
+    return "Loading...";
   }
 
   return (
     <div
-      className={`flex flex-col justify-between min-h-screen ${globalFont.className}`}
+      className={`flex min-h-screen flex-col justify-between ${globalFont.className}`}
     >
       <Header />
-      <main className="container h-full mx-auto flex-grow">
-        {user || router.pathname === "/login" ? (
+      <main className="container mx-auto h-full flex-grow">
+        {user || canByPassAuth(router.pathname) ? (
           <>{children}</>
         ) : (
           <Redirect to="/login" />
@@ -34,4 +34,12 @@ export default function Layout({ children }: PropsWithChildren) {
       <Footer />
     </div>
   );
+}
+
+function canByPassAuth(pathname: string) {
+  if (pathname === "/login" || pathname.startsWith("/auth")) {
+    return true;
+  }
+
+  return false;
 }

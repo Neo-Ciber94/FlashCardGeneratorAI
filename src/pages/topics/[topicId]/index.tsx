@@ -1,43 +1,38 @@
 import FlashCard from "@/lib/components/FlashCard";
 import { FlashCardModel } from "@/lib/models/flashcard";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import { CubeIcon, PlusIcon, ArchiveIcon } from "@heroicons/react/outline";
 import { PAGE_TITLE } from "@/lib/common/constants";
 import Link from "next/link";
 import Head from "next/head";
 import { FlashcardService } from "@/lib/services/flashCardService";
-import type { Auth } from "@aws-amplify/auth";
-import { withSSRContext } from "aws-amplify";
 import { TopicModel } from "@/lib/models/topic";
+import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
 
-type TopicFlashCardParam = { flashCards: FlashCardModel[]; topic: TopicModel };
+type Params = { flashCards: FlashCardModel[]; topic: TopicModel };
 
-export const getServerSideProps: GetServerSideProps<
-  TopicFlashCardParam
-> = async (context) => {
-  const topicId = context.params?.topicId;
+export const getServerSideProps = withAuthGetServerSideProps<Params>(
+  async (user, context) => {
+    const topicId = context.params?.topicId;
 
-  if (typeof topicId !== "string") {
-    throw new Error("Invalid topic id");
+    if (typeof topicId !== "string") {
+      throw new Error("Invalid topic id");
+    }
+
+    const flashCardService = new FlashcardService();
+    const { flashCards, topic } = await flashCardService.getAll(
+      topicId,
+      user.username
+    );
+
+    return {
+      props: {
+        flashCards,
+        topic,
+      },
+    };
   }
-
-  const amplifyContext = withSSRContext(context);
-  const auth = amplifyContext.Auth as typeof Auth;
-  const user = await auth.currentAuthenticatedUser();
-
-  const flashCardService = new FlashcardService();
-  const { flashCards, topic } = await flashCardService.getAll(
-    topicId,
-    user.username
-  );
-
-  return {
-    props: {
-      flashCards,
-      topic,
-    },
-  };
-};
+);
 
 export default function FlashCardPage({
   flashCards,

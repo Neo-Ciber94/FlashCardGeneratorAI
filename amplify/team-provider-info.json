@@ -12,9 +12,6 @@
       "AmplifyAppId": "d3csfduueb13ay"
     },
     "categories": {
-      "auth": {
-        "flashcardgeneratorai5c19902d": {}
-      },
       "storage": {
         "flashcardtopicdev": {},
         "flashcarddev": {}

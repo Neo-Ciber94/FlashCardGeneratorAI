@@ -12,12 +12,20 @@ export const globalFont = Montserrat({
 });
 
 export default function Layout({ children }: PropsWithChildren) {
-  const { user, isPending } = useAuthenticator((context) => [context.user]);
+  const { user, authStatus } = useAuthenticator((context) => [context.user]);
   const router = useRouter();
 
-  if (isPending) {
-    return "Loading...";
-  }
+  const Component = () => {
+    if (authStatus === "configuring") {
+      return <>Loading...</>;
+    }
+
+    return user || canByPassAuth(router.pathname) ? (
+      <>{children}</>
+    ) : (
+      <Redirect to="/login" />
+    );
+  };
 
   return (
     <div
@@ -25,11 +33,7 @@ export default function Layout({ children }: PropsWithChildren) {
     >
       <Header />
       <main className="container mx-auto h-full flex-grow">
-        {user || canByPassAuth(router.pathname) ? (
-          <>{children}</>
-        ) : (
-          <Redirect to="/login" />
-        )}
+        <Component />
       </main>
       <Footer />
     </div>

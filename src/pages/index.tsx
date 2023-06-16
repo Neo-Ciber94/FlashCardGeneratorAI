@@ -14,11 +14,7 @@ import toast from "react-hot-toast";
 import { getErrorMessage, getResponseError } from "@/lib/utils/getErrorMessage";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
 
-export default function Page() {
-  return <>hello</>
-}
-
-export const _getServerSideProps = withAuthGetServerSideProps<{
+export const getServerSideProps = withAuthGetServerSideProps<{
   topics: TopicModel[];
 }>(async (user) => {
   const topicService = new TopicService();
@@ -29,9 +25,9 @@ export const _getServerSideProps = withAuthGetServerSideProps<{
   };
 });
 
-function TopicListPage({
+export default function TopicListPage({
   topics,
-}: InferGetServerSidePropsType<typeof _getServerSideProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [open, setOpen] = useState(false);
   const [deletingTopic, setDeletingTopic] = useState<TopicModel>();
   const [editingTopic, setEditingTopic] = useState<TopicModel>();

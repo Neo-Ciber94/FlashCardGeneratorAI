@@ -8,6 +8,9 @@ import Head from "next/head";
 import { FlashcardService } from "@/lib/services/flashCardService";
 import { TopicModel } from "@/lib/models/topic";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
+import { Button } from "@aws-amplify/ui-react";
+import { useState } from "react";
+import GenerateFlashCardsEditor from "@/lib/components/GenerateFlashCardsEditor";
 
 type Params = { flashCards: FlashCardModel[]; topic: TopicModel };
 
@@ -38,31 +41,33 @@ export default function FlashCardPage({
   flashCards,
   topic,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <Head>
         <title>{`${PAGE_TITLE} | ${topic.name}`}</title>
       </Head>
 
-      <div className="px-4 md:px-20 py-4">
-        <h1 className="font-bold text-xl text-gray-700">{topic.name}</h1>
+      <div className="px-4 py-4 md:px-20">
+        <h1 className="text-xl font-bold text-gray-700">{topic.name}</h1>
 
-        <div className="my-2 flex flex-row justify-center sm:justify-end gap-2 mt-5">
-          <Link
-            href={`/topics/${topic.id}/flashcards/generate`}
-            className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400"
+        <div className="my-2 mt-5 flex flex-row justify-center gap-2 sm:justify-end">
+          <button
+            onClick={() => setOpen(true)}
+            className="flex min-w-[150px] flex-row items-center gap-2 rounded-md bg-indigo-500 px-4 py-2 text-white shadow-md hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400"
           >
-            <div className="w-5 h-5" style={{ transform: "rotateY(180deg)" }}>
+            <div className="h-5 w-5" style={{ transform: "rotateY(180deg)" }}>
               <CubeIcon />
             </div>
             <span>Generate</span>
-          </Link>
+          </button>
 
           <Link
             href={`/topics/${topic.id}/flashcards/new`}
-            className="min-w-[150px] flex flex-row shadow-md items-center gap-2 px-4 py-2 text-white rounded-md bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400"
+            className="flex min-w-[150px] flex-row items-center gap-2 rounded-md bg-red-500 px-4 py-2 text-white shadow-md hover:bg-red-600 focus:ring-4 focus:ring-red-400"
           >
-            <div className="w-5 h-5">
+            <div className="h-5 w-5">
               <PlusIcon />
             </div>
             <span>Add New</span>
@@ -70,9 +75,9 @@ export default function FlashCardPage({
         </div>
 
         {flashCards.length === 0 && (
-          <div className="text-center text-4xl text-gray-300 mt-20">
-            <div className="flex flex-row gap-3 justify-center items-center">
-              <div className="w-12 h-12">
+          <div className="mt-20 text-center text-4xl text-gray-300">
+            <div className="flex flex-row items-center justify-center gap-3">
+              <div className="h-12 w-12">
                 <ArchiveIcon />
               </div>
               <span>No FlashCards</span>
@@ -80,12 +85,14 @@ export default function FlashCardPage({
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
+        <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {flashCards.map((flashCard) => {
             return <FlashCard flashCard={flashCard} key={flashCard.id} />;
           })}
         </div>
       </div>
+
+      <GenerateFlashCardsEditor open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

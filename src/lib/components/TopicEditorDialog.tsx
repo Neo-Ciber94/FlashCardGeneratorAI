@@ -67,8 +67,7 @@ export default function TopicEditorDialog({
         throw new Error(await getResponseError(res));
       }
 
-      const json = await res.json();
-      console.log(json);
+      const _json = await res.json();
       notifier.resolve();
       reset();
 
@@ -77,7 +76,7 @@ export default function TopicEditorDialog({
       }
     } catch (err) {
       notifier.reject(getErrorMessage(err));
-      console.log(err);
+      console.error(err);
     } finally {
       onClose();
     }

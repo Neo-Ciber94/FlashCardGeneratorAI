@@ -61,8 +61,7 @@ export default function EditFlashCardPage({
         throw new Error(await getResponseError(res));
       }
 
-      const json = await res.json();
-      console.log(json);
+      const _json = await res.json();
       notifier.resolve();
       reset();
 

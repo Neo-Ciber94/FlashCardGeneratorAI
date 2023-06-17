@@ -31,15 +31,23 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
     fgLightColor: "black",
   });
 
+  const handleEdit = () => {
+    router.push(`/topics/${flashCard.topicId}/flashcards/edit/${flashCard.id}`);
+  };
+
+  const handleDelete = () => {
+    console.log("delete");
+  };
+
   // TODO: Translate to the center of the screen?
   return (
     <>
       <div
         onClick={() => setIsOpen(true)}
         className={twMerge(
-          `relative shadow-md py-6 px-4 h-64 w-full mx-auto items-center justify-center rounded-lg
-          cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-black/20 ${
-            isOpen ? "opacity-0 scale-105" : "opacity-100 scale-100 pattern"
+          `relative mx-auto h-64 w-full cursor-pointer items-center justify-center rounded-lg px-4 py-6
+          shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-black/20 ${
+            isOpen ? "scale-105 opacity-0" : "pattern scale-100 opacity-100"
           }`,
           className
         )}
@@ -55,16 +63,12 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
             .toString(),
         }}
       >
-        <div className="absolute flex flex-row justify-end right-1 top-0">
+        <div className="absolute right-1 top-0 flex flex-row justify-end">
           <ContextMenu
             items={[
               {
                 name: "Edit",
-                onClick: () => {
-                  router.push(
-                    `/topics/${flashCard.topicId}/flashcards/edit/${flashCard.id}`
-                  );
-                },
+                onClick: handleEdit,
                 leading: (
                   <div className="h-5 w-5 text-red-500">
                     <PencilIcon />
@@ -73,7 +77,7 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
               },
               {
                 name: "Delete",
-                onClick: console.log,
+                onClick: handleDelete,
                 leading: (
                   <div className="h-5 w-5 text-red-500">
                     <TrashIcon />
@@ -84,7 +88,7 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
           />
         </div>
 
-        <div className="font-bold text-base">{flashCard.title}</div>
+        <div className="text-base font-bold">{flashCard.title}</div>
       </div>
 
       <FlashCardPreview
@@ -156,9 +160,9 @@ function FlashCardPreview({ flashCard, open, onClose }: FlashCardModalProps) {
             >
               <Dialog.Panel
                 onClick={() => setIsFlip((x) => !x)}
-                className={`w-full min-h-[400px]
-                      text-lg relative max-w-lg rounded-2xl 
-                      text-left align-middle shadow-xl transition-all cursor-pointer flip-card pattern ${
+                className={`flip-card pattern
+                      relative min-h-[400px] w-full max-w-lg 
+                      cursor-pointer rounded-2xl text-left align-middle text-lg shadow-xl transition-all ${
                         globalFont.className
                       } ${isFlip ? "flipped" : ""}`}
                 style={{
@@ -169,11 +173,11 @@ function FlashCardPreview({ flashCard, open, onClose }: FlashCardModalProps) {
                   "--line-accent": lineColor.toString(),
                 }}
               >
-                <div className="font-bold flip-card-front px-4 py-6">
+                <div className="flip-card-front px-4 py-6 font-bold">
                   {flashCard.title}
                 </div>
                 <div
-                  className="font-bold flip-card-back px-4 pattern rounded-2xl py-6 w-full"
+                  className="flip-card-back pattern w-full rounded-2xl px-4 py-6 font-bold"
                   style={{
                     "--card-color": new Color(flashCard.color)
                       .darken(0.05)
@@ -181,7 +185,7 @@ function FlashCardPreview({ flashCard, open, onClose }: FlashCardModalProps) {
                     "--line-accent": lineColor.toString(),
                   }}
                 >
-                  <p className="font-bold text-2xl underline mb-3">Answer</p>
+                  <p className="mb-3 text-2xl font-bold underline">Answer</p>
                   <span>{flashCard.content}</span>
                 </div>
               </Dialog.Panel>

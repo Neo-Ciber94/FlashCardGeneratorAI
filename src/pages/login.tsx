@@ -4,7 +4,7 @@ import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
 import Head from "next/head";
 
 export default function LoginPage() {
-  const { user } = useAuthenticator((context) => [context.user]);
+  const { user, authStatus } = useAuthenticator((context) => [context.user]);
 
   return (
     <>
@@ -13,11 +13,12 @@ export default function LoginPage() {
       </Head>
 
       <div className="py-8">
-        {user ? (
+        {authStatus === "authenticated" ? (
           <Redirect to="/" />
         ) : (
           <Authenticator socialProviders={["google"]} />
         )}
+        {/* <Authenticator socialProviders={["google"]} /> */}
       </div>
     </>
   );

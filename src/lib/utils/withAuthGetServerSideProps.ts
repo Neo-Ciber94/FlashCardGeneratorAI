@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult, PreviewData } from "next";
+import { GetServerSidePropsContext, GetServerSidePropsResult, PreviewData } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { withSSRContext } from "aws-amplify";
 import type { Auth } from "@aws-amplify/auth";

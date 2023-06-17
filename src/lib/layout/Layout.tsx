@@ -5,6 +5,7 @@ import { Montserrat } from "next/font/google";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import Redirect from "../components/Redirect";
 import { useRouter } from "next/router";
+import LoadingIndicator from "../components/Loading";
 
 export const globalFont = Montserrat({
   weight: ["400"],
@@ -17,7 +18,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
   const Component = () => {
     if (authStatus === "configuring") {
-      return <>Loading...</>;
+      return <LoadingIndicator />;
     }
 
     return user || canByPassAuth(router.pathname) ? (
@@ -33,7 +34,7 @@ export default function Layout({ children }: PropsWithChildren) {
     >
       <Header />
       <main className="container mx-auto h-full flex-grow">
-        <Component />
+      <>{children}</>
       </main>
       <Footer />
     </div>

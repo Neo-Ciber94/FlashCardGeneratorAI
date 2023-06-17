@@ -13,6 +13,13 @@ import { deferred } from "@/lib/utils/promises";
 import toast from "react-hot-toast";
 import { getErrorMessage, getResponseError } from "@/lib/utils/getErrorMessage";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+
+// export default function Page() {
+//   const { user, authStatus } = useAuthenticator((context) => [context.user]);
+//   console.log({ user, authStatus });
+//   return <>Page</>
+// }
 
 export const getServerSideProps = withAuthGetServerSideProps<{
   topics: TopicModel[];

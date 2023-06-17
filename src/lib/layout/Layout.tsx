@@ -34,7 +34,8 @@ export default function Layout({ children }: PropsWithChildren) {
     >
       <Header />
       <main className="container mx-auto h-full flex-grow">
-        <Component />
+        {/* <Component /> */}
+        <>{children}</>
       </main>
       <Footer />
     </div>

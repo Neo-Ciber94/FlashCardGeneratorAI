@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import { Montserrat } from "next/font/google";
@@ -6,7 +6,6 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import Redirect from "../components/Redirect";
 import { useRouter } from "next/router";
 import LoadingIndicator from "../components/Loading";
-import { Hub, Auth } from "aws-amplify";
 
 export const globalFont = Montserrat({
   weight: ["400"],
@@ -16,12 +15,6 @@ export const globalFont = Montserrat({
 export default function Layout({ children }: PropsWithChildren) {
   const { user, authStatus } = useAuthenticator((context) => [context.user]);
   const router = useRouter();
-
-  useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then((currentUser) => console.log(currentUser))
-      .catch(() => console.log("Not signed in"));
-  }, []);
 
   const Component = () => {
     if (authStatus === "configuring") {

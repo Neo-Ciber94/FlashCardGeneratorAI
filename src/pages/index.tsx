@@ -4,7 +4,7 @@ import TopicCard from "@/lib/components/TopicCard";
 import { TopicModel } from "@/lib/models/topic";
 import { TopicService } from "@/lib/services/topicService";
 import { ArchiveIcon, PlusIcon } from "@heroicons/react/outline";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { useRefreshGetServerSideProps as useRefreshData } from "@/lib/hooks/useRefreshData";
@@ -13,8 +13,6 @@ import { deferred } from "@/lib/utils/promises";
 import toast from "react-hot-toast";
 import { getErrorMessage, getResponseError } from "@/lib/utils/getErrorMessage";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
-import { withSSRContext } from "aws-amplify";
-import type { Auth } from "@aws-amplify/auth";
 
 export const getServerSideProps = withAuthGetServerSideProps<{
   topics: TopicModel[];
@@ -26,18 +24,6 @@ export const getServerSideProps = withAuthGetServerSideProps<{
     props: { topics },
   };
 });
-
-// export const getServerSideProps : GetServerSideProps<{ topics: TopicModel[] }> = async (context) => {
-//   const amplifyContext = withSSRContext(context);
-//   const auth = amplifyContext.Auth as typeof Auth;
-//   const user = await auth.currentAuthenticatedUser();
-//   const topicService = new TopicService();
-//   const topics = await topicService.getAll(user.username);
-
-//   return {
-//     props: { topics },
-//   };
-// }
 
 export default function TopicListPage({
   topics,

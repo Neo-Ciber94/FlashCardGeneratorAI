@@ -15,6 +15,9 @@
       "storage": {
         "flashcardtopicdev": {},
         "flashcarddev": {}
+      },
+      "auth": {
+        "flashcardgeneratorai0f3170a7": {}
       }
     }
   }

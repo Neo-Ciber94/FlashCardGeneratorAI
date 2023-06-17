@@ -46,10 +46,24 @@
       "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://flashcardgeneratorai4c056aa1-4c056aa1-dev.auth.us-east-1.amazoncognito.com/auth/callback/\",\"http://localhost:3000/\"],\"LogoutURLs\":[\"https://flashcardgeneratorai4c056aa1-4c056aa1-dev.auth.us-east-1.amazoncognito.com/auth/callback/\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true
+    "useEnabledMfas": true,
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "dependsOn": [],
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://flashcardgeneratorai4c056aa1-4c056aa1-dev.auth.us-east-1.amazoncognito.com/auth/callback/\",\"http://localhost:3000/\"],\"LogoutURLs\":[\"https://flashcardgeneratorai4c056aa1-4c056aa1-dev.auth.us-east-1.amazoncognito.com/auth/callback/\",\"http://localhost:3000/\"]}"
   }
 }

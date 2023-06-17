@@ -86,20 +86,18 @@ export default function TopicListPage({
         </div>
       </div>
 
-      {editingTopic && (
-        <TopicEditorDialog
-          topic={editingTopic}
-          open={open}
-          onClose={() => {
-            setOpen(false);
-            setEditingTopic(undefined);
-          }}
-          onSucceed={() => {
-            refreshData();
-            setEditingTopic(undefined);
-          }}
-        />
-      )}
+      <TopicEditorDialog
+        topic={editingTopic}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          setEditingTopic(undefined);
+        }}
+        onSucceed={() => {
+          refreshData();
+          setEditingTopic(undefined);
+        }}
+      />
 
       <ModalDialog
         title="Delete Topic?"

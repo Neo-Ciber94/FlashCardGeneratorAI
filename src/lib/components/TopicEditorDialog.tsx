@@ -83,9 +83,14 @@ export default function TopicEditorDialog({
     }
   };
 
+  const handleClose = () => {
+    onClose();
+    reset();
+  };
+
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose} unmount>
+      <Dialog as="div" className="relative z-10" onClose={handleClose} unmount>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -120,20 +125,20 @@ export default function TopicEditorDialog({
                   <div className="mt-2">
                     <input
                       placeholder="Name"
-                      className="w-full p-2 rounded-md outline-none border-2 border-gray-300"
+                      className="w-full rounded-md border-2 border-gray-300 p-2 outline-none"
                       {...register("name")}
                     />
 
                     {errors.name && (
-                      <small className="text-red-400 italic">
+                      <small className="italic text-red-400">
                         {errors.name.message}
                       </small>
                     )}
                   </div>
                   <button
-                    className="ml-auto min-w-[150px] justify-center flex flex-row shadow-md 
-                  items-center gap-2 px-4 py-2 text-white rounded-md mt-4
-                  bg-violet-500 hover:bg-violet-600 focus:ring-4 focus:ring-violet-400"
+                    className="ml-auto mt-4 flex min-w-[150px] flex-row items-center 
+                  justify-center gap-2 rounded-md bg-violet-500 px-4 py-2 text-white
+                  shadow-md hover:bg-violet-600 focus:ring-4 focus:ring-violet-400"
                   >
                     <span>Create</span>
                   </button>

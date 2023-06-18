@@ -3,6 +3,7 @@ import { FlashcardService } from "@/lib/services/flashCardService";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSSRContext } from "aws-amplify";
 import type { Auth } from '@aws-amplify/auth';
+import { ServerError } from "@/lib/utils/error";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
@@ -17,10 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
         }
 
-        const abortController = new AbortController();
-        req.on('close', () => {
-            abortController.abort();
-        })
+        // const abortController = new AbortController();
+        // req.on('close', () => {
+        //     abortController.abort();
+        // })
 
         const amplifyContext = withSSRContext({ req });
         const auth = amplifyContext.Auth as typeof Auth;
@@ -29,11 +30,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const service = new FlashcardService();
         const { data } = input;
-        const result = service.generateFlashCards(userName, data, { signal: abortController.signal });
+        const result = await service.generateFlashCards(userName, data);
         return res.status(200).json(result);
     }
     catch (err) {
         console.error(err);
-        return res.status(500);
+        if (err instanceof ServerError) {
+            const serverError = err as ServerError;
+            return res.status(serverError.statusCode).send(serverError.message);
+        }
+
+        return res.status(500).end();
     }
 }

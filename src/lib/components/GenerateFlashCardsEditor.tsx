@@ -17,20 +17,25 @@ export interface GenerateFlashCardsEditorProps {
   topicId: string;
   open: boolean;
   onClose: () => void;
+  onGenerate?: (flashCards: FlashCardModel[]) => void;
 }
 
 export default function GenerateFlashCardsEditor({
   topicId,
   open,
   onClose,
+  onGenerate,
 }: GenerateFlashCardsEditorProps) {
   const abortControllerRef = useRef(new AbortController());
-  const { register, reset, getValues, handleSubmit } =
+  const { register, reset, handleSubmit, watch } =
     useForm<GenerateFlashCardModel>({
       defaultValues: {
+        text: "",
         topicId,
       },
     });
+
+  const { text: currentText } = watch();
 
   const generateFlashCards = useMutation({
     mutationKey: "generate-flashcard",
@@ -52,8 +57,12 @@ export default function GenerateFlashCardsEditor({
           throw new Error(await getResponseError(res));
         }
 
-        const json = await res.json();
-        console.log(json);
+        const result = await res.json();
+        if (onGenerate) {
+          onGenerate(result);
+        }
+
+        notifier.resolve();
       } catch (err) {
         console.error(err);
         notifier.reject(getErrorMessage(err));
@@ -61,21 +70,25 @@ export default function GenerateFlashCardsEditor({
     },
   });
 
-  useEffect(() => {
-    const abortController = abortControllerRef.current;
-    return () => {
-      console.log("aborted");
-      abortController.abort();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const abortController = abortControllerRef.current;
+  //   return () => {
+  //     console.log("aborted");
+  //     abortController.abort();
+  //   };
+  // }, []);
 
   const handleClose = () => {
+    if (generateFlashCards.isLoading) {
+      return;
+    }
+
     onClose();
     reset();
   };
 
-  const submit = (data: GenerateFlashCardModel) => {
-    generateFlashCards.mutate(data);
+  const submit = async (data: GenerateFlashCardModel) => {
+    await generateFlashCards.mutateAsync(data);
   };
 
   return (
@@ -125,14 +138,14 @@ export default function GenerateFlashCardsEditor({
                 ></textarea>
 
                 <div className="flex w-full flex-row justify-start text-xs text-gray-400">
-                  {getValues("text").length} /{" "}
-                  {MAX_GENERATE_FLASH_CARD_TEXT_LENGTH}
+                  {currentText.length} /{MAX_GENERATE_FLASH_CARD_TEXT_LENGTH}
                 </div>
                 <div className="flex flex-row justify-end">
                   <button
+                    type="button"
                     disabled={generateFlashCards.isLoading}
                     onClick={handleSubmit(submit)}
-                    className="flex min-w-[150px] flex-row items-center justify-center gap-2 rounded-md bg-indigo-500 px-4 py-2 text-white shadow-md hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400"
+                    className="flex min-w-[150px] flex-row items-center justify-center gap-2 rounded-md bg-indigo-500 px-4 py-2 text-white shadow-md hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400 disabled:opacity-50"
                   >
                     <span>Generate</span>
                   </button>

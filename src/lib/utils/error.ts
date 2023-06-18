@@ -12,4 +12,15 @@ export class ServerError extends Error {
     get code() {
         return this._code;
     }
+
+    get statusCode() {
+        switch (this._code) {
+            case 'BAD_REQUEST':
+                return 400;
+            case 'NOT_FOUND':
+                return 404;
+            default:
+                return 500;
+        }
+    }
 }

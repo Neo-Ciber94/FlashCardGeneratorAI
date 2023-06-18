@@ -5,7 +5,7 @@ import { Montserrat } from "next/font/google";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import Redirect from "../components/Redirect";
 import { useRouter } from "next/router";
-import LoadingIndicator from "../components/Loading";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 export const globalFont = Montserrat({
   weight: ["400"],

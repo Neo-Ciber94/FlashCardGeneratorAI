@@ -1,4 +1,4 @@
-import LoadingIndicator from "@/lib/components/Loading";
+import LoadingIndicator from "@/lib/components/LoadingIndicator";
 import Redirect from "@/lib/components/Redirect";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 

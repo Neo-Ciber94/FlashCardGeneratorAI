@@ -10,6 +10,7 @@ import { TopicModel } from "@/lib/models/topic";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
 import { useState } from "react";
 import GenerateFlashCardsEditor from "@/lib/components/GenerateFlashCardsEditor";
+import { useRefreshGetServerSideProps } from "@/lib/hooks/useRefreshData";
 
 type Params = { flashCards: FlashCardModel[]; topic: TopicModel };
 
@@ -41,6 +42,7 @@ export default function FlashCardPage({
   topic,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [open, setOpen] = useState(false);
+  const refreshData = useRefreshGetServerSideProps();
 
   return (
     <>
@@ -95,6 +97,10 @@ export default function FlashCardPage({
         topicId={topic.id}
         open={open}
         onClose={() => setOpen(false)}
+        onGenerate={(data) => {
+          console.log(data);
+          refreshData();
+        }}
       />
     </>
   );

@@ -121,14 +121,15 @@ export class FlashcardService {
             apiKey: process.env.OPENAI_API_KEY
         })
 
+        console.log(input);
         const openAi = new OpenAIApi(openAiConfig);
         const request: CreateChatCompletionRequest = {
             model: 'gpt-3.5-turbo',
             messages: [
                 {
                     role: 'system',
-                    content: `You are a assistant that creates flashcards, keep your answer just as json.
-                    If unable to process a request response only with: ${ERROR_RESPONSE}`
+                    content: `You are a assistant that creates flashcards, response only as JSON with no explanations or
+                    if unable to process a request response with: ${ERROR_RESPONSE}`
                 },
                 {
                     role: 'user',
@@ -137,9 +138,10 @@ export class FlashcardService {
             ]
         }
 
+        console.log("Creating flashcards...");
         const response = await openAi.createChatCompletion(request, { signal: options?.signal });
         const createChatCompletionResponse = response.data;
-        console.log("response", createChatCompletionResponse);
+        console.log("response", JSON.stringify(createChatCompletionResponse, null, 2));
         const message = createChatCompletionResponse.choices[0].message;
 
         if (message == null || message.content == null || message.content.trim() === ERROR_RESPONSE) {
@@ -147,6 +149,9 @@ export class FlashcardService {
         }
 
         const json = JSON.parse(message.content) as Pick<FlashCardModel, 'title' | 'content'>[];
+        console.log("FlashCards generated", json);
+        const now = Date.now();
+
         const flashCards: FlashCardModel[] = json.map(card => {
             return {
                 id: crypto.randomUUID(),
@@ -155,12 +160,15 @@ export class FlashcardService {
                 content: card.content,
                 topicId: input.topicId,
                 ownerId: userId,
-                lastModified: Date.now(),
+                lastModified: now + Math.floor(Math.random() * 1000),
                 isAiGenerated: true
             }
         });
 
+        console.log("FlashCards dynamodb request", flashCards);
+
         const requests = flashCards.map(flashCard => ({ PutRequest: { Item: flashCard } }))
+
         await dynamoDb.batchWrite({
             RequestItems: {
                 [process.env.FLASHCARD_TABLE_NAME]: requests

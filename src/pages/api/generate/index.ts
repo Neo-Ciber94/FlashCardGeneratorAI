@@ -18,10 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
         }
 
-        // const abortController = new AbortController();
-        // req.on('close', () => {
-        //     abortController.abort();
-        // })
+        const abortController = new AbortController();
+        req.on('close', () => {
+            abortController.abort();
+        })
 
         const amplifyContext = withSSRContext({ req });
         const auth = amplifyContext.Auth as typeof Auth;
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const service = new FlashcardService();
         const { data } = input;
-        const result = await service.generateFlashCards(userName, data);
+        const result = await service.generateFlashCards(userName, data, { signal: abortController.signal });
         return res.status(200).json(result);
     }
     catch (err) {

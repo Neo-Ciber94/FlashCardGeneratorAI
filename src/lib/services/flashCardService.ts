@@ -115,6 +115,24 @@ export class FlashcardService {
         return item;
     }
 
+    async delete(userId: string, topicId: string, flashCardId: string) {
+        const flashCardToDelete = await this.getById(topicId, flashCardId, userId);
+
+        if (flashCardToDelete == null || flashCardToDelete.ownerId != userId) {
+            throw new ServerError('NOT_FOUND')
+        }
+
+        await dynamoDb.delete({
+            Key: {
+                ownerId: userId,
+                lastModified: flashCardToDelete.lastModified
+            },
+            TableName: process.env.FLASHCARD_TABLE_NAME
+        });
+
+        return flashCardToDelete;
+    }
+
     async generateFlashCards(userId: string, input: GenerateFlashCardModel, options?: { signal?: AbortSignal }) {
         const ERROR_RESPONSE = "[failed to generate]";
         const openAiConfig = new OpenAIConfiguration({

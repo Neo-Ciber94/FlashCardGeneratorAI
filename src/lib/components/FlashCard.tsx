@@ -8,6 +8,9 @@ import { twMerge } from "tailwind-merge";
 import ContextMenu from "./ContextMenu";
 import { PencilIcon, TrashIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import { deferred } from "../utils/promises";
+import toast from "react-hot-toast";
+import { getErrorMessage, getResponseError } from "../utils/getErrorMessage";
 
 declare module "react" {
   interface CSSProperties {
@@ -19,9 +22,14 @@ declare module "react" {
 export interface FlashCardProps {
   flashCard: FlashCardModel;
   className?: string;
+  onDelete?: (flashCard: FlashCardModel) => void;
 }
 
-export default function FlashCard({ flashCard, className }: FlashCardProps) {
+export default function FlashCard({
+  flashCard,
+  className,
+  onDelete,
+}: FlashCardProps) {
   const router = useRouter();
   const cc = new ContrastColor();
   const borderColor = new Color(flashCard.color).darken(0.05).fade(0.05);
@@ -35,8 +43,34 @@ export default function FlashCard({ flashCard, className }: FlashCardProps) {
     router.push(`/topics/${flashCard.topicId}/flashcards/edit/${flashCard.id}`);
   };
 
-  const handleDelete = () => {
-    console.log("delete");
+  const handleDelete = async () => {
+    const notifier = deferred<void>();
+    toast.promise(notifier.promise, {
+      loading: "Deleting...",
+      success: "Flashcards was deleted successfully",
+      error: (msg) => msg,
+    });
+
+    try {
+      const res = await fetch(
+        `/api/flashcards/${flashCard.id}?topicId=${flashCard.topicId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(await getResponseError(res));
+      }
+
+      if (onDelete) {
+        onDelete(flashCard);
+      }
+      notifier.resolve();
+    } catch (err) {
+      console.error(err);
+      notifier.reject(getErrorMessage(err));
+    }
   };
 
   // TODO: Translate to the center of the screen?

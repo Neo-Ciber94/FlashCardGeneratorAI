@@ -10,7 +10,6 @@ import {
 import { toast } from "react-hot-toast";
 import { deferred } from "../utils/promises";
 import { getErrorMessage, getResponseError } from "../utils/getErrorMessage";
-import { useMutation } from "react-query";
 import { FlashCardModel } from "../models/flashcard";
 
 export interface GenerateFlashCardsEditorProps {
@@ -27,48 +26,20 @@ export default function GenerateFlashCardsEditor({
   onGenerate,
 }: GenerateFlashCardsEditorProps) {
   const abortControllerRef = useRef(new AbortController());
-  const { register, reset, handleSubmit, watch } =
-    useForm<GenerateFlashCardModel>({
-      defaultValues: {
-        text: "",
-        topicId,
-      },
-    });
-
-  const { text: currentText } = watch();
-
-  const generateFlashCards = useMutation({
-    mutationKey: "generate-flashcard",
-    async mutationFn(input: GenerateFlashCardModel) {
-      const notifier = deferred<void>();
-      toast.promise(notifier.promise, {
-        loading: "Generating...",
-        success: "Flashcards generated successfully",
-        error: (msg) => msg,
-      });
-
-      try {
-        const res = await fetch("/api/generate", {
-          method: "POST",
-          body: JSON.stringify(input),
-        });
-
-        if (!res.ok) {
-          throw new Error(await getResponseError(res));
-        }
-
-        const result = await res.json();
-        if (onGenerate) {
-          onGenerate(result);
-        }
-
-        notifier.resolve();
-      } catch (err) {
-        console.error(err);
-        notifier.reject(getErrorMessage(err));
-      }
+  const {
+    register,
+    reset,
+    handleSubmit,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<GenerateFlashCardModel>({
+    defaultValues: {
+      text: "",
+      topicId,
     },
   });
+
+  const { text: currentText } = watch();
 
   // useEffect(() => {
   //   const abortController = abortControllerRef.current;
@@ -79,7 +50,7 @@ export default function GenerateFlashCardsEditor({
   // }, []);
 
   const handleClose = () => {
-    if (generateFlashCards.isLoading) {
+    if (isSubmitting) {
       return;
     }
 
@@ -88,7 +59,33 @@ export default function GenerateFlashCardsEditor({
   };
 
   const submit = async (data: GenerateFlashCardModel) => {
-    await generateFlashCards.mutateAsync(data);
+    const notifier = deferred<void>();
+    toast.promise(notifier.promise, {
+      loading: "Generating...",
+      success: "Flashcards generated successfully",
+      error: (msg) => msg,
+    });
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        throw new Error(await getResponseError(res));
+      }
+
+      const result = await res.json();
+      if (onGenerate) {
+        onGenerate(result);
+      }
+
+      notifier.resolve();
+    } catch (err) {
+      console.error(err);
+      notifier.reject(getErrorMessage(err));
+    }
   };
 
   return (
@@ -143,7 +140,7 @@ export default function GenerateFlashCardsEditor({
                 <div className="flex flex-row justify-end">
                   <button
                     type="button"
-                    disabled={generateFlashCards.isLoading}
+                    disabled={isSubmitting}
                     onClick={handleSubmit(submit)}
                     className="flex min-w-[150px] flex-row items-center justify-center gap-2 rounded-md bg-indigo-500 px-4 py-2 text-white shadow-md hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400 disabled:opacity-50"
                   >

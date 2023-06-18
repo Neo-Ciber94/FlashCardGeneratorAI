@@ -88,7 +88,15 @@ export default function FlashCardPage({
 
         <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {flashCards.map((flashCard) => {
-            return <FlashCard flashCard={flashCard} key={flashCard.id} />;
+            return (
+              <FlashCard
+                flashCard={flashCard}
+                key={flashCard.id}
+                onDelete={() => {
+                  refreshData();
+                }}
+              />
+            );
           })}
         </div>
       </div>

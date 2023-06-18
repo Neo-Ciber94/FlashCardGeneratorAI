@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const abortController = new AbortController();
         req.on('close', () => {
             abortController.abort();
+            console.log("Generate FlashCard request aborted");
         })
 
         const amplifyContext = withSSRContext({ req });

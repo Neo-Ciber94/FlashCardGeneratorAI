@@ -1,5 +1,5 @@
 import { Transition, Dialog } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -37,6 +37,12 @@ export default function TopicEditorDialog({
     resolver: zodResolver(topic ? updateTopicModel : createTopicModel),
     defaultValues: topic,
   });
+
+  useEffect(() => {
+    if (topic != null) {
+      reset(topic);
+    }
+  }, [reset, topic]);
 
   const submit = async (input: CreateTopicModel) => {
     const notifier = deferred<void>();

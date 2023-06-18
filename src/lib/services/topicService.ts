@@ -3,10 +3,13 @@ import crypto from 'crypto';
 import { ServerError } from "../utils/error";
 import { dynamoDb } from "../aws/dynamodb";
 
+const OWNER_INDEX = "ownerId-Index";
+
 export class TopicService {
     async getAll(userId: string): Promise<TopicModel[]> {
         const result = await dynamoDb.query({
             TableName: process.env.TOPIC_TABLE_NAME,
+            IndexName: OWNER_INDEX,
             KeyConditionExpression: "ownerId = :userId",
             ExpressionAttributeValues: { ":userId": userId }
         })
@@ -18,9 +21,9 @@ export class TopicService {
         const result = await dynamoDb.query({
             TableName: process.env.TOPIC_TABLE_NAME,
             Limit: 1,
-            IndexName: "topicIdIndex",
-            KeyConditionExpression: "id = :id",
-            FilterExpression: "ownerId = :userId",
+            IndexName: OWNER_INDEX,
+            KeyConditionExpression: "ownerId = :userId",
+            FilterExpression: "id = :id",
             ExpressionAttributeValues: {
                 ':id': id,
                 ':userId': userId
@@ -101,9 +104,8 @@ export class TopicService {
         }
 
         await dynamoDb.delete({
-            Key: { ownerId: userId, lastModified: item.lastModified },
+            Key: { id: item.id, lastModified: item.lastModified },
             TableName: process.env.TOPIC_TABLE_NAME,
-
         });
 
         return item as TopicModel;

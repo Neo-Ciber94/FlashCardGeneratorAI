@@ -7,7 +7,7 @@ import { ArchiveIcon, PlusIcon } from "@heroicons/react/outline";
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { useRefreshGetServerSideProps as useRefreshData } from "@/lib/hooks/useRefreshData";
+import { useRefreshData } from "@/lib/hooks/useRefreshData";
 import ModalDialog from "@/lib/components/ModalDialog";
 import { deferred } from "@/lib/utils/promises";
 import toast from "react-hot-toast";

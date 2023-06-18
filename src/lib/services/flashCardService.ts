@@ -8,18 +8,21 @@ import { OpenAIApi, Configuration as OpenAIConfiguration, CreateChatCompletionRe
 import { PASTEL_COLORS } from "../common/constants";
 import { GenerateFlashCardModel } from "../models/generate";
 
-export class FlashcardService {
+const OWNER_INDEX = "ownerId-Index";
 
+export class FlashcardService {
     async getAll(topicId: string, userId: string): Promise<{ flashCards: FlashCardModel[], topic: TopicModel }> {
         const topicService = new TopicService();
         const topic = await topicService.getById(topicId, userId);
 
+        console.log({ topic })
         if (topic == null) {
             throw new ServerError("NOT_FOUND");
         }
 
         const result = await dynamoDb.query({
             TableName: process.env.FLASHCARD_TABLE_NAME,
+            IndexName: OWNER_INDEX,
             KeyConditionExpression: "ownerId = :userId",
             FilterExpression: "topicId = :topicId",
             ExpressionAttributeValues: {
@@ -35,9 +38,9 @@ export class FlashcardService {
     async getById(topicId: string, flashCardId: string, userId: string): Promise<FlashCardModel | null> {
         const result = await dynamoDb.query({
             TableName: process.env.FLASHCARD_TABLE_NAME,
-            IndexName: "flashCardIdIndex",
-            KeyConditionExpression: "id = :id",
-            FilterExpression: "topicId = :topicId and ownerId = :userId",
+            IndexName: OWNER_INDEX,
+            KeyConditionExpression: "ownerId = :userId",
+            FilterExpression: "topicId = :topicId and id = :id",
             ExpressionAttributeValues: {
                 ':id': flashCardId,
                 ':topicId': topicId,
@@ -103,7 +106,7 @@ export class FlashcardService {
         // FIXME: We are doing two operations to update, we need to rethink the keys
 
         await dynamoDb.delete({
-            Key: { ownerId: userId, lastModified: flashCardToUpdate.lastModified },
+            Key: { id: flashCardToUpdate.id, lastModified: flashCardToUpdate.lastModified },
             TableName: process.env.FLASHCARD_TABLE_NAME
         })
 
@@ -124,7 +127,7 @@ export class FlashcardService {
 
         await dynamoDb.delete({
             Key: {
-                ownerId: userId,
+                id: flashCardId,
                 lastModified: flashCardToDelete.lastModified
             },
             TableName: process.env.FLASHCARD_TABLE_NAME
@@ -147,7 +150,7 @@ export class FlashcardService {
                 {
                     role: 'system',
                     content: `You are a assistant that creates flashcards, response only as JSON with no explanations or
-                    if unable to process a request response with: ${ERROR_RESPONSE}`
+                    if the text makes no sense for a flashcard respond with: ${ERROR_RESPONSE}`
                 },
                 {
                     role: 'user',

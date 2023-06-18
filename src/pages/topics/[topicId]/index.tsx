@@ -10,7 +10,7 @@ import { TopicModel } from "@/lib/models/topic";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
 import { useState } from "react";
 import GenerateFlashCardsEditor from "@/lib/components/GenerateFlashCardsEditor";
-import { useRefreshGetServerSideProps } from "@/lib/hooks/useRefreshData";
+import { useRefreshData } from "@/lib/hooks/useRefreshData";
 
 type Params = { flashCards: FlashCardModel[]; topic: TopicModel };
 
@@ -18,22 +18,29 @@ export const getServerSideProps = withAuthGetServerSideProps<Params>(
   async (user, context) => {
     const topicId = context.params?.topicId;
 
-    if (typeof topicId !== "string") {
-      throw new Error("Invalid topic id");
+    try {
+      if (typeof topicId !== "string") {
+        throw new Error("Invalid topic id");
+      }
+
+      const flashCardService = new FlashcardService();
+      const { flashCards, topic } = await flashCardService.getAll(
+        topicId,
+        user.username
+      );
+
+      return {
+        props: {
+          flashCards,
+          topic,
+        },
+      };
+    } catch (err) {
+      console.error(err);
+      return {
+        notFound: true,
+      };
     }
-
-    const flashCardService = new FlashcardService();
-    const { flashCards, topic } = await flashCardService.getAll(
-      topicId,
-      user.username
-    );
-
-    return {
-      props: {
-        flashCards,
-        topic,
-      },
-    };
   }
 );
 
@@ -42,7 +49,7 @@ export default function FlashCardPage({
   topic,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [open, setOpen] = useState(false);
-  const refreshData = useRefreshGetServerSideProps();
+  const refreshData = useRefreshData();
 
   return (
     <>

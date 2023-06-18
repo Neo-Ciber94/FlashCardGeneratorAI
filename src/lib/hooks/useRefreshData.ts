@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-export function useRefreshGetServerSideProps(): () => void {
+export function useRefreshData(): () => void {
     const router = useRouter();
     return () => router.replace(router.asPath);
 }

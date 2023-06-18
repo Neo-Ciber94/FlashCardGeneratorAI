@@ -40,14 +40,20 @@ export default function GenerateFlashCardsEditor({
   });
 
   const { text: currentText } = watch();
+  const isTextTooLarge =
+    currentText.length > MAX_GENERATE_FLASH_CARD_TEXT_LENGTH;
 
-  // useEffect(() => {
-  //   const abortController = abortControllerRef.current;
-  //   return () => {
-  //     console.log("aborted");
-  //     abortController.abort();
-  //   };
-  // }, []);
+  useEffect(() => {
+    if (!isSubmitting) {
+      return;
+    }
+
+    const abortController = abortControllerRef.current;
+    return () => {
+      console.log("aborted");
+      abortController.abort();
+    };
+  }, [isSubmitting]);
 
   const handleClose = () => {
     if (isSubmitting) {
@@ -134,7 +140,11 @@ export default function GenerateFlashCardsEditor({
                   className={`mt-3 h-[65vh] min-h-max w-full resize-none rounded-sm bg-transparent p-4 outline-none placeholder:italic`}
                 ></textarea>
 
-                <div className="flex w-full flex-row justify-start text-xs text-gray-400">
+                <div
+                  className={`flex w-full flex-row justify-start text-xs ${
+                    isTextTooLarge ? "text-red-600" : "text-gray-400"
+                  } `}
+                >
                   {currentText.length} /{MAX_GENERATE_FLASH_CARD_TEXT_LENGTH}
                 </div>
                 <div className="flex flex-row justify-end">

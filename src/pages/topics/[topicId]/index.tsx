@@ -8,7 +8,6 @@ import Head from "next/head";
 import { FlashcardService } from "@/lib/services/flashCardService";
 import { TopicModel } from "@/lib/models/topic";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
-import { Button } from "@aws-amplify/ui-react";
 import { useState } from "react";
 import GenerateFlashCardsEditor from "@/lib/components/GenerateFlashCardsEditor";
 

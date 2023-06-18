@@ -46,7 +46,7 @@ export default function TopicCard({ topic, onEdit, onDelete }: TopicCardProps) {
             <div className="w-8 h-8 text-red-500 flex-grow-0 flex-shrink-0 ml-3">
               <DocumentDuplicateIcon />
             </div>
-            <p className="text-black">{topic.name}</p>
+            <p className="text-black line-clamp-3">{topic.name}</p>
 
             <ContextMenu
               items={[

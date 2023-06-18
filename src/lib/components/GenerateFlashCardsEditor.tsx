@@ -1,6 +1,6 @@
 import { Transition, Dialog } from "@headlessui/react";
-import { CubeIcon, XIcon } from "@heroicons/react/outline";
-import { Fragment, useRef, useState } from "react";
+import { XIcon } from "@heroicons/react/outline";
+import { Fragment, useEffect, useState } from "react";
 import { globalFont } from "../layout/Layout";
 
 const MAX_TEXT_LENGTH = 2000;
@@ -18,6 +18,7 @@ export default function GenerateFlashCardsEditor({
 
   const handleClose = () => {
     onClose();
+    setText("");
   };
 
   const handleGenerate = () => {
@@ -25,7 +26,6 @@ export default function GenerateFlashCardsEditor({
   };
 
   return (
-    // Use the `Transition` component at the root level
     <Transition show={open} as={Fragment}>
       <Dialog onClose={handleClose} unmount>
         <Transition.Child

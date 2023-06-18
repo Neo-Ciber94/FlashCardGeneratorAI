@@ -29,5 +29,14 @@
       "service": "Cognito"
     }
   },
-  "storage": {}
+  "storage": {
+    "FlashCardTable": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "FlashCardTopicTable": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    }
+  }
 }

@@ -1,28 +1,81 @@
 import { Transition, Dialog } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import { globalFont } from "../layout/Layout";
-
-const MAX_TEXT_LENGTH = 2000;
+import { useForm } from "react-hook-form";
+import {
+  GenerateFlashCardModel,
+  MAX_GENERATE_FLASH_CARD_TEXT_LENGTH,
+} from "../models/generate";
+import { toast } from "react-hot-toast";
+import { deferred } from "../utils/promises";
+import { getErrorMessage, getResponseError } from "../utils/getErrorMessage";
+import { useMutation } from "react-query";
+import { FlashCardModel } from "../models/flashcard";
 
 export interface GenerateFlashCardsEditorProps {
+  topicId: string;
   open: boolean;
   onClose: () => void;
 }
 
 export default function GenerateFlashCardsEditor({
+  topicId,
   open,
   onClose,
 }: GenerateFlashCardsEditorProps) {
-  const [text, setText] = useState("");
+  const abortControllerRef = useRef(new AbortController());
+  const { register, reset, getValues, handleSubmit } =
+    useForm<GenerateFlashCardModel>({
+      defaultValues: {
+        topicId,
+      },
+    });
+
+  const generateFlashCards = useMutation({
+    mutationKey: "generate-flashcard",
+    async mutationFn(input: GenerateFlashCardModel) {
+      const notifier = deferred<void>();
+      toast.promise(notifier.promise, {
+        loading: "Generating...",
+        success: "Flashcards generated successfully",
+        error: (msg) => msg,
+      });
+
+      try {
+        const res = await fetch("/api/generate", {
+          method: "POST",
+          body: JSON.stringify(input),
+        });
+
+        if (!res.ok) {
+          throw new Error(await getResponseError(res));
+        }
+
+        const json = await res.json();
+        console.log(json);
+      } catch (err) {
+        console.error(err);
+        notifier.reject(getErrorMessage(err));
+      }
+    },
+  });
+
+  useEffect(() => {
+    const abortController = abortControllerRef.current;
+    return () => {
+      console.log("aborted");
+      abortController.abort();
+    };
+  }, []);
 
   const handleClose = () => {
     onClose();
-    setText("");
+    reset();
   };
 
-  const handleGenerate = () => {
-    console.log("Generate");
+  const submit = (data: GenerateFlashCardModel) => {
+    generateFlashCards.mutate(data);
   };
 
   return (
@@ -66,17 +119,19 @@ export default function GenerateFlashCardsEditor({
                   Generate FlashCards
                 </Dialog.Title>
                 <textarea
-                  onInput={(e) => setText(e.currentTarget.value)}
+                  {...register("text")}
                   placeholder="Write the topic or text you would like to use to generate the flashcards..."
                   className={`mt-3 h-[65vh] min-h-max w-full resize-none rounded-sm bg-transparent p-4 outline-none placeholder:italic`}
                 ></textarea>
 
                 <div className="flex w-full flex-row justify-start text-xs text-gray-400">
-                  {text.length} / {MAX_TEXT_LENGTH}
+                  {getValues("text").length} /{" "}
+                  {MAX_GENERATE_FLASH_CARD_TEXT_LENGTH}
                 </div>
                 <div className="flex flex-row justify-end">
                   <button
-                    onClick={handleGenerate}
+                    disabled={generateFlashCards.isLoading}
+                    onClick={handleSubmit(submit)}
                     className="flex min-w-[150px] flex-row items-center justify-center gap-2 rounded-md bg-indigo-500 px-4 py-2 text-white shadow-md hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400"
                   >
                     <span>Generate</span>

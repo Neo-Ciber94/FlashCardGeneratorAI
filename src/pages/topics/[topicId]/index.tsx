@@ -91,7 +91,11 @@ export default function FlashCardPage({
         </div>
       </div>
 
-      <GenerateFlashCardsEditor open={open} onClose={() => setOpen(false)} />
+      <GenerateFlashCardsEditor
+        topicId={topic.id}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
     </>
   );
 }

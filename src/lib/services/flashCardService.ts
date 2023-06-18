@@ -178,7 +178,7 @@ export class FlashcardService {
                 content: card.content,
                 topicId: input.topicId,
                 ownerId: userId,
-                lastModified: now + Math.floor(Math.random() * 1000),
+                lastModified: now,
                 isAiGenerated: true
             }
         });

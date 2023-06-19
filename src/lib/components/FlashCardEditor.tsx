@@ -83,7 +83,7 @@ export default function FlashCardEditor({
 
   return (
     <form onSubmit={handleSubmit(submit)}>
-      <div className="flex flex-row justify-end my-4 gap-4">
+      <div className="flex xs:flex-row flex-col justify-end my-4 gap-4">
         <button
           type="submit"
           className="min-w-[150px] flex flex-row shadow-md 

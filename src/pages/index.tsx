@@ -78,7 +78,7 @@ export default function TopicListPage({
         <div className="my-2 mt-5 flex flex-row justify-center gap-2 sm:justify-end">
           <button
             onClick={() => setOpen(true)}
-            className="flex min-w-[150px] flex-row items-center gap-2 rounded-md bg-red-500 px-4 py-2 text-white shadow-md hover:bg-red-600 focus:ring-4 focus:ring-red-400"
+            className="flex min-w-full flex-row items-center gap-2 rounded-md bg-red-500 px-4 py-2 text-white shadow-md hover:bg-red-600 focus:ring-4 focus:ring-red-400 sm:min-w-[150px]"
           >
             <div className="h-5 w-5">
               <PlusIcon />

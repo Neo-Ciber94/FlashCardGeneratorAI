@@ -15,7 +15,6 @@ export class FlashcardService {
         const topicService = new TopicService();
         const topic = await topicService.getById(topicId, userId);
 
-        console.log({ topic })
         if (topic == null) {
             throw new ServerError("NOT_FOUND");
         }
@@ -23,6 +22,7 @@ export class FlashcardService {
         const result = await dynamoDb.query({
             TableName: process.env.FLASHCARD_TABLE_NAME,
             IndexName: OWNER_INDEX,
+            ScanIndexForward: true,
             KeyConditionExpression: "ownerId = :userId",
             FilterExpression: "topicId = :topicId",
             ExpressionAttributeValues: {

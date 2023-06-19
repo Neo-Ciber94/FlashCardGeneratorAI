@@ -10,6 +10,7 @@ export class TopicService {
         const result = await dynamoDb.query({
             TableName: process.env.TOPIC_TABLE_NAME,
             IndexName: OWNER_INDEX,
+            ScanIndexForward: true,
             KeyConditionExpression: "ownerId = :userId",
             ExpressionAttributeValues: { ":userId": userId }
         })
@@ -20,7 +21,6 @@ export class TopicService {
     async getById(id: string, userId: string): Promise<TopicModel | null> {
         const result = await dynamoDb.query({
             TableName: process.env.TOPIC_TABLE_NAME,
-            Limit: 1,
             IndexName: OWNER_INDEX,
             KeyConditionExpression: "ownerId = :userId",
             FilterExpression: "id = :id",

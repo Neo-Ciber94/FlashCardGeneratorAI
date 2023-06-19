@@ -33,6 +33,37 @@ export default function TopicListPage({
   const [editingTopic, setEditingTopic] = useState<TopicModel>();
   const refreshData = useRefreshData();
 
+  const handleDelete = async (close: () => void) => {
+    const notifier = deferred<void>();
+    toast.promise(notifier.promise, {
+      loading: "Loading...",
+      success: "Topic was deleted",
+      error: (msg) => msg,
+    });
+
+    if (deletingTopic == null) {
+      throw new Error("no topic to delete");
+    }
+
+    try {
+      const res = await fetch(`/api/topics/${deletingTopic.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error(await getResponseError(res));
+      }
+
+      notifier.resolve();
+      refreshData();
+    } catch (err) {
+      notifier.reject(getErrorMessage(err));
+      console.error(err);
+    } finally {
+      close();
+    }
+  };
+
   return (
     <>
       <Head>
@@ -108,36 +139,7 @@ export default function TopicListPage({
             name: "Delete",
             className:
               "bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400 shadow-md rounded-md",
-            onClick: async (_, close) => {
-              const notifier = deferred<void>();
-              toast.promise(notifier.promise, {
-                loading: "Loading...",
-                success: "Topic was deleted",
-                error: (msg) => msg,
-              });
-
-              if (deletingTopic == null) {
-                throw new Error("no topic to delete");
-              }
-
-              try {
-                const res = await fetch(`/api/topics/${deletingTopic.id}`, {
-                  method: "DELETE",
-                });
-
-                if (!res.ok) {
-                  throw new Error(await getResponseError(res));
-                }
-
-                notifier.resolve();
-                refreshData();
-              } catch (err) {
-                notifier.reject(getErrorMessage(err));
-                console.error(err);
-              } finally {
-                close();
-              }
-            },
+            onClick: (_, close) => handleDelete(close),
           },
           {
             name: "Cancel",

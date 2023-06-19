@@ -124,7 +124,7 @@ export default function TopicEditorDialog({
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  New Topic
+                  {topic ? "Edit Topic" : "New Topic"}
                 </Dialog.Title>
                 <form onSubmit={handleSubmit(submit)}>
                   <div className="mt-2">
@@ -145,7 +145,7 @@ export default function TopicEditorDialog({
                   justify-center gap-2 rounded-md bg-violet-500 px-4 py-2 text-white
                   shadow-md hover:bg-violet-600 focus:ring-4 focus:ring-violet-400"
                   >
-                    <span>Create</span>
+                    <span>{topic ? "Update": "Create"}</span>
                   </button>
                 </form>
               </Dialog.Panel>

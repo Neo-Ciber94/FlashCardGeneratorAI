@@ -6,6 +6,7 @@ import { getErrorMessage, getResponseError } from "@/lib/utils/getErrorMessage";
 import { deferred } from "@/lib/utils/promises";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import BreadCrumb from "@/lib/components/Breadcrumb";
 
 export default function NewFlashCardPage() {
   const router = useRouter();
@@ -47,7 +48,16 @@ export default function NewFlashCardPage() {
       <Head>
         <title>{`${PAGE_TITLE} | New`}</title>
       </Head>
-      <div className="mt-5 mx-4 sm:mx-10 lg:mx-28">
+      <div className="mx-4 mt-5 sm:mx-10 lg:mx-28">
+        <BreadCrumb
+          segments={[
+            {
+              name: "Topics",
+              to: "/",
+            },
+          ]}
+        />
+
         <FlashCardEditor action="create" onSubmit={handleSubmit} />
       </div>
     </>

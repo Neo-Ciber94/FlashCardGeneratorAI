@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { InferGetServerSidePropsType } from "next";
 import { FlashcardService } from "@/lib/services/flashCardService";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
+import BreadCrumb from "@/lib/components/Breadcrumb";
 
 export const getServerSideProps = withAuthGetServerSideProps<{
   flashCard: FlashCardModel;
@@ -77,7 +78,16 @@ export default function EditFlashCardPage({
       <Head>
         <title>{`${PAGE_TITLE} | Edit`}</title>
       </Head>
-      <div className="mt-5 mx-4 sm:mx-10 lg:mx-28">
+      <div className="mx-4 mt-5 sm:mx-10 lg:mx-28">
+        <BreadCrumb
+          segments={[
+            {
+              name: "Topics",
+              to: "/",
+            },
+          ]}
+        />
+
         <FlashCardEditor
           action="edit"
           flashCard={flashCard}

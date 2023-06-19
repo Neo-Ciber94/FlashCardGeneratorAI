@@ -11,6 +11,7 @@ import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSidePro
 import { useState } from "react";
 import GenerateFlashCardsEditor from "@/lib/components/GenerateFlashCardsEditor";
 import { useRefreshData } from "@/lib/hooks/useRefreshData";
+import BreadCrumb from "@/lib/components/Breadcrumb";
 
 type Params = { flashCards: FlashCardModel[]; topic: TopicModel };
 
@@ -58,9 +59,18 @@ export default function FlashCardPage({
       </Head>
 
       <div className="px-4 py-4 md:px-20">
+        <BreadCrumb
+          segments={[
+            {
+              name: "Topics",
+              to: "/",
+            },
+          ]}
+        />
+
         <h1 className="text-xl font-bold text-gray-700">{topic.name}</h1>
 
-        <div className="my-2 mt-5 flex xs:flex-row flex-col justify-center gap-2 sm:justify-end">
+        <div className="my-2 mt-5 flex flex-col justify-center gap-2 xs:flex-row sm:justify-end">
           <button
             onClick={() => setOpen(true)}
             className="flex min-w-[150px] flex-row items-center gap-2 rounded-md bg-indigo-500 px-4 py-2 text-white shadow-md hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-400"

@@ -12,6 +12,7 @@ import { useState } from "react";
 import GenerateFlashCardsEditor from "@/lib/components/GenerateFlashCardsEditor";
 import { useRefreshData } from "@/lib/hooks/useRefreshData";
 import BreadCrumb from "@/lib/components/Breadcrumb";
+import { Reorder } from "framer-motion";
 
 type Params = { flashCards: FlashCardModel[]; topic: TopicModel };
 
@@ -46,11 +47,12 @@ export const getServerSideProps = withAuthGetServerSideProps<Params>(
 );
 
 export default function FlashCardPage({
-  flashCards,
   topic,
+  ...rest
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [open, setOpen] = useState(false);
   const refreshData = useRefreshData();
+  const [flashCards, setFlashCards] = useState(rest.flashCards || []);
 
   return (
     <>
@@ -106,13 +108,14 @@ export default function FlashCardPage({
         <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {flashCards.map((flashCard) => {
             return (
-              <FlashCard
-                flashCard={flashCard}
-                key={flashCard.id}
-                onDelete={() => {
-                  refreshData();
-                }}
-              />
+              <div key={flashCard.id}>
+                <FlashCard
+                  flashCard={flashCard}
+                  onDelete={() => {
+                    refreshData();
+                  }}
+                />
+              </div>
             );
           })}
         </div>

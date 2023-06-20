@@ -13,6 +13,7 @@ import { deferred } from "@/lib/utils/promises";
 import toast from "react-hot-toast";
 import { getErrorMessage, getResponseError } from "@/lib/utils/getErrorMessage";
 import { withAuthGetServerSideProps } from "@/lib/utils/withAuthGetServerSideProps";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const getServerSideProps = withAuthGetServerSideProps<{
   topics: TopicModel[];
@@ -101,17 +102,25 @@ export default function TopicListPage({
         <div className="mt-4 grid grid-cols-1 gap-10 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {topics.map((topic) => {
             return (
-              <TopicCard
-                topic={topic}
-                key={topic.id}
-                onDelete={(topic) => {
-                  setDeletingTopic(topic);
-                }}
-                onEdit={(topic) => {
-                  setEditingTopic(topic);
-                  setOpen(true);
-                }}
-              />
+              <AnimatePresence key={topic.id}>
+                <motion.div
+                  key="topic"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                >
+                  <TopicCard
+                    topic={topic}
+                    onDelete={(topic) => {
+                      setDeletingTopic(topic);
+                    }}
+                    onEdit={(topic) => {
+                      setEditingTopic(topic);
+                      setOpen(true);
+                    }}
+                  />
+                </motion.div>
+              </AnimatePresence>
             );
           })}
         </div>

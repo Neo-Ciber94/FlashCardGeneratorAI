@@ -145,7 +145,7 @@ export default function TopicEditorDialog({
                   justify-center gap-2 rounded-md bg-violet-500 px-4 py-2 text-white
                   shadow-md hover:bg-violet-600 focus:ring-4 focus:ring-violet-400"
                   >
-                    <span>{topic ? "Update": "Create"}</span>
+                    <span>{topic ? "Update" : "Create"}</span>
                   </button>
                 </form>
               </Dialog.Panel>

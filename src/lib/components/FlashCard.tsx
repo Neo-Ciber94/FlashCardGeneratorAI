@@ -22,13 +22,13 @@ declare module "react" {
 export interface FlashCardProps {
   flashCard: FlashCardModel;
   className?: string;
-  onDelete?: (flashCard: FlashCardModel) => void;
+  afterDelete?: (flashCard: FlashCardModel) => void;
 }
 
 export default function FlashCard({
   flashCard,
   className,
-  onDelete,
+  afterDelete,
 }: FlashCardProps) {
   const router = useRouter();
   const cc = new ContrastColor();
@@ -63,8 +63,8 @@ export default function FlashCard({
         throw new Error(await getResponseError(res));
       }
 
-      if (onDelete) {
-        onDelete(flashCard);
+      if (afterDelete) {
+        afterDelete(flashCard);
       }
       notifier.resolve();
     } catch (err) {

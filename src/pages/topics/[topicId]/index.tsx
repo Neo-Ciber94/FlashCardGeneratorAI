@@ -52,7 +52,7 @@ export default function FlashCardPage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [open, setOpen] = useState(false);
   const refreshData = useRefreshData();
-  const [flashCards, setFlashCards] = useState(rest.flashCards || []);
+  const [flashCards, _setFlashCards] = useState(rest.flashCards || []);
 
   return (
     <>
@@ -111,7 +111,7 @@ export default function FlashCardPage({
               <div key={flashCard.id}>
                 <FlashCard
                   flashCard={flashCard}
-                  onDelete={() => {
+                  afterDelete={() => {
                     refreshData();
                   }}
                 />

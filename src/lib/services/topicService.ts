@@ -2,6 +2,7 @@ import { CreateTopicModel, TopicModel, UpdateTopicModel, createTopicModel, updat
 import crypto from 'crypto';
 import { ServerError } from "../utils/error";
 import { dynamoDb } from "../aws/dynamodb";
+import { FlashcardService } from "./flashCardService";
 
 const OWNER_INDEX = "ownerId-Index";
 
@@ -103,10 +104,24 @@ export class TopicService {
             throw new ServerError('NOT_FOUND')
         }
 
-        await dynamoDb.delete({
-            Key: { id: item.id, lastModified: item.lastModified },
-            TableName: process.env.TOPIC_TABLE_NAME,
-        });
+        const flashCardService = new FlashcardService();
+        const { flashCards: topicFlashCards } = await flashCardService.getAll(id, userId);
+        const deleteFlashCardsRequests = topicFlashCards.map(f => ({ DeleteRequest: { Key: { id: f.id, lastModified: f.lastModified } } }))
+
+        console.log(`topic '${item.name}' will delete ${topicFlashCards.length} flashcards`)
+        
+        await dynamoDb.batchWrite({
+            RequestItems: {
+                [process.env.TOPIC_TABLE_NAME]: [
+                    {
+                        DeleteRequest: {
+                            Key: { id: item.id, lastModified: item.lastModified },
+                        }
+                    }
+                ],
+                [process.env.FLASHCARD_TABLE_NAME]: deleteFlashCardsRequests
+            }
+        })
 
         return item as TopicModel;
     }

@@ -33,7 +33,7 @@ export default function Layout({ children }: PropsWithChildren) {
       className={`flex min-h-screen flex-col justify-between ${globalFont.className}`}
     >
       <Header />
-      <main className="container mx-auto h-full flex-grow">
+      <main className="md:container mx-auto h-full flex-grow">
         <Component />
       </main>
       <Footer />

@@ -25,7 +25,7 @@ export default function LoadingIndicator({ delay }: LoadingIndicatorProps) {
   }
 
   return (
-    <div className="w-full animate-pulse p-3 text-center text-xl text-gray-400/50">
+    <div className="w-full animate-pulse animate-bounce p-3 text-center text-2xl text-gray-400/50">
       Loading...
     </div>
   );

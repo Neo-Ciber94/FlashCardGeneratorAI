@@ -65,7 +65,7 @@ export default function FlashCardPage({
           segments={[
             {
               name: "Topics",
-              to: "/",
+              to: "/topics",
             },
           ]}
         />

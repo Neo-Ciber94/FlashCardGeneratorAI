@@ -33,7 +33,7 @@ export default function Layout({ children }: PropsWithChildren) {
       className={`flex min-h-screen flex-col justify-between ${globalFont.className}`}
     >
       <Header />
-      <main className="md:container mx-auto h-full flex-grow">
+      <main className="mx-auto h-full flex-grow md:container">
         <Component />
       </main>
       <Footer />
@@ -42,7 +42,11 @@ export default function Layout({ children }: PropsWithChildren) {
 }
 
 function canByPassAuth(pathname: string) {
-  if (pathname === "/login" || pathname.startsWith("/auth")) {
+  if (
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname.startsWith("/auth")
+  ) {
     return true;
   }
 

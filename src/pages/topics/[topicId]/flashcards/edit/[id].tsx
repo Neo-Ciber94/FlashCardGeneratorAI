@@ -83,7 +83,7 @@ export default function EditFlashCardPage({
           segments={[
             {
               name: "Topics",
-              to: "/",
+              to: "/topics",
             },
           ]}
         />

@@ -14,7 +14,7 @@ export default function LoginPage() {
 
       <div className="py-8">
         {authStatus === "authenticated" ? (
-          <Redirect to="/" />
+          <Redirect to="/topics" />
         ) : (
           <Authenticator socialProviders={["google"]} />
         )}

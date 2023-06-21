@@ -10,7 +10,7 @@ export default function AuthPage() {
   }
 
   return authStatus === "authenticated" ? (
-    <Redirect to="/" />
+    <Redirect to="/topics" />
   ) : (
     <Redirect to="/login" />
   );

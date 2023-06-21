@@ -53,7 +53,7 @@ export default function NewFlashCardPage() {
           segments={[
             {
               name: "Topics",
-              to: "/",
+              to: "/topics",
             },
           ]}
         />

@@ -52,7 +52,7 @@ function Features() {
   const features = [
     "Our flashcard application can help you get the most out of your education by helping you learn more effectively and efficiently",
     "Easily organize your flashcards by topic so you can study more effectively",
-    "Generate flashcards using AI. Our AI-powered flashcard generator will help you create flashcards with the most important information from your text",
+    "Our AI-powered flashcard generator will help you create flashcards with the most important information from your text",
   ];
 
   return (

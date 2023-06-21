@@ -1,10 +1,9 @@
 import { PASTEL_COLORS } from "@/lib/common/constants";
 import FlashCardBase from "@/lib/components/FlashCardBase";
 import Rotable from "@/lib/components/Rotable";
-import React, { useRef } from "react";
+import React from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useIsPresent } from "framer-motion";
-import { useIsVisible } from "@/lib/hooks/useIsVisible";
+import { AnimatePresence, motion } from "framer-motion";
 import AnimateOnVisible from "@/lib/components/AnimateOnVisible";
 
 export default function HomePage() {

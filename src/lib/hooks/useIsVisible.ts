@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, RefObject, MutableRefObject } from "react";
+import { useState, useEffect, useRef, RefObject } from "react";
 
 export function useIsVisible<T extends Element>(): [RefObject<T>, boolean] {
     const ref = useRef<T>(null);

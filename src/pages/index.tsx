@@ -5,6 +5,7 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useIsPresent } from "framer-motion";
 import { useIsVisible } from "@/lib/hooks/useIsVisible";
+import AnimateOnVisible from "@/lib/components/AnimateOnVisible";
 
 export default function HomePage() {
   return (
@@ -31,9 +32,10 @@ function CallToAction() {
       </div>
       <AnimatePresence>
         <motion.div
-          initial={{ opacity: 0, translateX: 50, transitionDuration: "200ms" }}
+          initial={{ opacity: 0, translateX: 50 }}
           animate={{ opacity: 1, translateX: 0 }}
           exit={{ opacity: 0, translateX: 0 }}
+          transition={{ duration: 0.3 }}
         >
           <div className="mt-10 flex h-[400px] w-full flex-row justify-center px-0 md:w-8/12 lg:mt-0 lg:w-full lg:px-16">
             <div
@@ -59,9 +61,6 @@ function CallToAction() {
 }
 
 function Features() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isPresent = useIsVisible(ref);
-
   const features = [
     "Our flashcard application can help you get the most out of your education by helping you learn more effectively and efficiently",
     "Easily organize your flashcards by topic so you can study more effectively",
@@ -69,37 +68,29 @@ function Features() {
   ];
 
   return (
-    <section
-      ref={ref}
-      className="m-10 flex flex-col justify-center rounded-lg bg-red-100 px-12 py-24"
-    >
+    <section className="m-10 flex flex-col justify-center rounded-lg bg-red-100 px-12 py-24">
       <h1 className="mb-10 text-center text-5xl font-bold text-black">
         Features
       </h1>
       <div className="flex flex-col items-center justify-around gap-5 md:flex-row">
         {features.map((feature, idx) => {
           return (
-            <AnimatePresence key={idx}>
-              {isPresent && (
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    scale: 0.5,
-                    transitionDuration: `${500 + 100 * idx}ms`,
-                  }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.5 }}
-                >
-                  <Rotable>
-                    <FlashCardBase
-                      title={feature}
-                      bgColor={PASTEL_COLORS[idx]}
-                      className="text-center hover:scale-95"
-                    />
-                  </Rotable>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <AnimateOnVisible
+              key={idx}
+              className="flex-grow basis-1/3"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.5, delay: idx * 0.4 }}
+            >
+              <Rotable>
+                <FlashCardBase
+                  title={feature}
+                  bgColor={PASTEL_COLORS[idx]}
+                  className="text-center hover:scale-95"
+                />
+              </Rotable>
+            </AnimateOnVisible>
           );
         })}
       </div>
@@ -109,8 +100,18 @@ function Features() {
 
 function PoweredBy() {
   return (
-    <section className="flex flex-col items-center justify-between gap-5 px-5 py-32 lg:px-24">
-      <h1 className="text-center text-xl font-bold sm:text-3xl">Powered By</h1>
+    <section className="flex flex-col items-center justify-between gap-5 px-0 py-32 lg:px-24">
+      <AnimateOnVisible
+        initial={{ opacity: 0, translateX: -100 }}
+        animate={{ opacity: 1, translateX: 0 }}
+        exit={{ opacity: 0, translateX: -100 }}
+        transition={{ duration: 0.4 }}
+      >
+        <h1 className="text-center text-xl font-bold sm:text-3xl">
+          Powered By
+        </h1>
+      </AnimateOnVisible>
+
       <div className="relative h-[200px] w-[60vw] max-w-[600px]">
         <a href="https://docs.amplify.aws/" target="_blank">
           <Image

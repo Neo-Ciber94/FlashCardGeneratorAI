@@ -1,11 +1,14 @@
 import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 export interface RotableProps {
   degrees?: number;
+  className?: string;
 }
 
 export default function Rotable({
   children,
+  className,
   degrees = 6,
 }: PropsWithChildren<RotableProps>) {
   const ref = useRef<HTMLDivElement>(null);
@@ -46,7 +49,10 @@ export default function Rotable({
   return (
     <div
       ref={ref}
-      className="h-full w-full transition-transform duration-300"
+      className={twMerge(
+        "h-full w-full transition-transform duration-300",
+        className
+      )}
       style={{ transform: `rotate(${rotation}deg)` }}
     >
       {children}

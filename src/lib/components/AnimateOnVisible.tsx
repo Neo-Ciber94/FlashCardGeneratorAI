@@ -1,12 +1,6 @@
 import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
-import { useIsVisible, useIsVisibleWithRef } from "../hooks/useIsVisible";
-import {
-  PropsWithChildren,
-  RefObject,
-  forwardRef,
-  useEffect,
-  useState,
-} from "react";
+import { useIsVisible } from "../hooks/useIsVisible";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 export interface AnimateOnVisibleProps extends HTMLMotionProps<"div"> {}
 
@@ -14,7 +8,7 @@ export default function AnimateOnVisible({
   children,
   ...rest
 }: PropsWithChildren<AnimateOnVisibleProps>) {
-  const [ref, isVisible] = useIsVisible<any>();
+  const [ref, isVisible] = useIsVisible<HTMLDivElement>();
   const [alreadyVisible, setAlreadyVisible] = useState(isVisible);
 
   useEffect(() => {

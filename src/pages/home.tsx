@@ -1,16 +1,15 @@
 import { PASTEL_COLORS } from "@/lib/common/constants";
 import FlashCardBase from "@/lib/components/FlashCardBase";
-import PlaceHolder from "@/lib/components/Placeholder";
 import Rotable from "@/lib/components/Rotable";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import React from "react";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
     <div>
       <CallToAction />
       <Features />
+      <PoweredBy />
     </div>
   );
 }
@@ -28,18 +27,37 @@ function CallToAction() {
           mastering new concepts today and unlock your full learning potential.
         </p>
       </div>
-      <div className="h-[400px] w-8/12 px-0 lg:w-full lg:px-16">
-        <PlaceHolder />
+      <div className="mt-10 flex h-[400px] w-full flex-row justify-center px-0 md:w-8/12 lg:mt-0 lg:w-full lg:px-16">
+        <div
+          className="relative flex h-full w-full flex-row justify-center overflow-hidden rounded-md border border-gray-200/70 bg-white shadow-md sm:w-[600px]"
+          style={{
+            transform: "rotate3d(1, 1, 1, 5deg)",
+            perspective: 1000,
+            transformStyle: "preserve-3d",
+          }}
+        >
+          <Image
+            alt="FlashCards Page"
+            src="/images/flashcards-page.png"
+            className="w-full object-contain"
+            fill
+          />
+        </div>
       </div>
     </section>
   );
 }
 
 function Features() {
-  const features = ["Feature 1", "Feature 2", "Feature 3"];
+  const features = [
+    "Our flashcard application can help you get the most out of your education by helping you learn more effectively and efficiently",
+    "Easily organize your flashcards by topic so you can study more effectively",
+    "Generate flashcards using AI. Our AI-powered flashcard generator will help you create flashcards with the most important information from your text",
+  ];
+
   return (
-    <section className="m-10 flex flex-col justify-center rounded-lg bg-black px-12 py-24">
-      <h1 className="mb-10 text-center text-5xl font-bold text-white">
+    <section className="m-10 flex flex-col justify-center rounded-lg bg-red-100 px-12 py-24">
+      <h1 className="mb-10 text-center text-5xl font-bold text-black">
         Features
       </h1>
       <div className="flex flex-col items-center justify-around gap-5 md:flex-row">
@@ -60,3 +78,20 @@ function Features() {
   );
 }
 
+function PoweredBy() {
+  return (
+    <section className="flex flex-col items-center justify-between gap-5 px-5 py-32 lg:px-24">
+      <h1 className="text-center text-xl font-bold sm:text-3xl">Powered By</h1>
+      <div className="relative h-[200px] w-[60vw] max-w-[600px]">
+        <a href="https://docs.amplify.aws/" target="_blank">
+          <Image
+            alt="AWS Amplify"
+            src="/images/amplify-logo.png"
+            fill
+            className="object-contain"
+          />
+        </a>
+      </div>
+    </section>
+  );
+}

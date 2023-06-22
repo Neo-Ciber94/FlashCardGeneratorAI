@@ -4,5 +4,6 @@ namespace NodeJS {
         TOPIC_TABLE_NAME: string;
         FLASHCARD_TABLE_NAME: string;
         OPENAI_API_KEY: string;
+        secrets?: string;
     }
 }

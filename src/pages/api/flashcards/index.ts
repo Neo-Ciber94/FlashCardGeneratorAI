@@ -2,11 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withSSRContext } from "aws-amplify";
 import type { Auth } from '@aws-amplify/auth';
 import { FlashcardService } from "@/lib/services/flashCardService";
+import { getUserFromRequest } from "@/lib/utils/getUserFromRequest";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const amplifyContext = withSSRContext({ req });
-    const auth = amplifyContext.Auth as typeof Auth;
-    const user = await auth.currentAuthenticatedUser();
+    const user = await getUserFromRequest(req);
     const userName = user?.username;
 
     if (userName == null) {

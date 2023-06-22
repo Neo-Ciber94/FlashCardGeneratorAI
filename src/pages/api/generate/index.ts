@@ -1,9 +1,8 @@
 import { generateFlashCardModel } from "@/lib/models/generate";
 import { FlashcardService } from "@/lib/services/flashCardService";
 import { NextApiRequest, NextApiResponse } from "next";
-import { withSSRContext } from "aws-amplify";
-import type { Auth } from '@aws-amplify/auth';
 import { ServerError } from "@/lib/utils/error";
+import { getUserFromRequest } from "@/lib/utils/getUserFromRequest";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
@@ -24,10 +23,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.log("Generate FlashCard request aborted");
         })
 
-        const amplifyContext = withSSRContext({ req });
-        const auth = amplifyContext.Auth as typeof Auth;
-        const user = await auth.currentAuthenticatedUser();
+        const user = await getUserFromRequest(req);
         const userName = user?.username;
+
+        if (userName == null) {
+            return res.status(401).end();
+        }
 
         const service = new FlashcardService();
         const { data } = input;

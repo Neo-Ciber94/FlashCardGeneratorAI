@@ -64,6 +64,6 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://flashcardgeneratorai4c056aa1-4c056aa1-dev.auth.us-east-1.amazoncognito.com/auth/callback/\",\"http://localhost:3000/auth/callback/\"],\"LogoutURLs\":[\"https://flashcardgeneratorai4c056aa1-4c056aa1-dev.auth.us-east-1.amazoncognito.com/auth/callback/\",\"http://localhost:3000/auth/callback/\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://main.d3csfduueb13ay.amplifyapp.com/auth/callback/\",\"http://localhost:3000/auth/callback/\"],\"LogoutURLs\":[\"https://main.d3csfduueb13ay.amplifyapp.com/auth/callback/\",\"http://localhost:3000/auth/callback/\"]}"
   }
 }

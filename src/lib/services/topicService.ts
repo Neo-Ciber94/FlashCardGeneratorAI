@@ -1,3 +1,4 @@
+import "@/lib/aws/setEnvFromSecrets";
 import { CreateTopicModel, TopicModel, UpdateTopicModel, createTopicModel, updateTopicModel } from "../models/topic";
 import crypto from 'crypto';
 import { ServerError } from "../utils/error";

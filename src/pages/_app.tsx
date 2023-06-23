@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import "@/lib/aws/awsConfig";
 import "@aws-amplify/ui-react/styles.css";
+import "@/lib/aws/setEnvFromSecrets";
 import type { AppProps } from "next/app";
 import Layout from "@/lib/layout/Layout";
 import { Toaster } from "react-hot-toast";

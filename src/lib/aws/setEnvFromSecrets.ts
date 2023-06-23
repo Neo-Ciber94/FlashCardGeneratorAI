@@ -13,6 +13,7 @@ console.log({ secrets });
 
 if (secrets) {
     console.log("Settings environment secrets");
+    
     for (const [key, value] of Object.entries(secrets)) {
         console.log("Setting secret: " + key);
         process.env[key] = value;

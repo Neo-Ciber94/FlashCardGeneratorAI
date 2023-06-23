@@ -125,8 +125,7 @@ export default function FlashCardPage({
         topicId={topic.id}
         open={open}
         onClose={() => setOpen(false)}
-        onGenerate={(data) => {
-          console.log(data);
+        onGenerate={(_data) => {
           refreshData();
         }}
       />

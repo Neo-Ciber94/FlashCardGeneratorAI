@@ -50,7 +50,6 @@ export default function GenerateFlashCardsEditor({
 
     const abortController = abortControllerRef.current;
     return () => {
-      console.log("aborted");
       abortController.abort();
     };
   }, [isSubmitting]);

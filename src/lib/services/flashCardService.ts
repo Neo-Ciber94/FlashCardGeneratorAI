@@ -142,7 +142,7 @@ export class FlashcardService {
             apiKey: process.env.OPENAI_API_KEY
         })
 
-        console.log(input);
+        console.log(JSON.stringify(input, null, 2));
         const openAi = new OpenAIApi(openAiConfig);
         const request: CreateChatCompletionRequest = {
             model: 'gpt-3.5-turbo',
@@ -170,7 +170,7 @@ export class FlashcardService {
         }
 
         const json = JSON.parse(message.content) as Pick<FlashCardModel, 'title' | 'content'>[];
-        console.log("FlashCards generated", json);
+        console.log("FlashCards generated", JSON.stringify(json, null, 2));
         const now = Date.now();
 
         const flashCards: FlashCardModel[] = json.map(card => {
@@ -186,7 +186,7 @@ export class FlashcardService {
             }
         });
 
-        console.log("FlashCards dynamodb request", flashCards);
+        console.log("FlashCards dynamodb request", JSON.stringify(flashCards, null, 2));
 
         const requests = flashCards.map(flashCard => ({ PutRequest: { Item: flashCard } }))
 

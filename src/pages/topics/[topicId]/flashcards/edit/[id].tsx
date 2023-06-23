@@ -69,7 +69,7 @@ export default function EditFlashCardPage({
       router.push(`/topics/${String(router.query.topicId)}`);
     } catch (err) {
       notifier.reject(getErrorMessage(err));
-      console.log(err);
+      console.error(err);
     }
   };
 

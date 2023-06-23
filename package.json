@@ -22,6 +22,7 @@
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "aws-amplify": "^5.2.5",
+    "aws-sdk": "^2.1403.0",
     "color": "^4.2.3",
     "contrast-color": "^1.0.1",
     "dayjs": "^1.11.8",

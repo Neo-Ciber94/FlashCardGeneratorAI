@@ -1,4 +1,3 @@
-import "@/lib/aws/setEnvFromSecrets";
 import { CreateFlashCardModel, FlashCardModel, UpdateFlashCardModel, createFlashCardModel, updateFlashCardModel } from "../models/flashcard";
 import { dynamoDb } from "../aws/dynamodb";
 import { ServerError } from "../utils/error";

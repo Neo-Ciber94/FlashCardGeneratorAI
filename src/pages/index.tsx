@@ -3,7 +3,6 @@ import FlashCardBase from "@/lib/components/FlashCardBase";
 import Rotable from "@/lib/components/Rotable";
 import React from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
 import AnimateOnVisible from "@/lib/components/AnimateOnVisible";
 
 export default function HomePage() {
@@ -20,41 +19,58 @@ function CallToAction() {
   return (
     <section className="flex flex-col items-center justify-between gap-5 px-5 py-32 lg:flex-row lg:px-24">
       <div className="w-full text-left lg:w-4/12">
-        <h1 className="mb-10 text-2xl font-bold sm:text-5xl">
-          Supercharge your learning with SmartFlash!
-        </h1>
-
-        <p className="rounded-md bg-red-100 p-5 text-sm">
-          Take control of your knowledge and boost your memory retention. Start
-          mastering new concepts today and unlock your full learning potential.
-        </p>
-      </div>
-      <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0, translateX: 50 }}
+        <AnimateOnVisible
+          initial={{ opacity: 0, translateX: -50 }}
           animate={{ opacity: 1, translateX: 0 }}
           exit={{ opacity: 0, translateX: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="mt-10 flex h-[400px] w-full flex-row justify-center px-0 md:w-8/12 lg:mt-0 lg:w-full lg:px-16">
-            <div
-              className="relative flex h-full w-full flex-row justify-center overflow-hidden rounded-md border border-gray-200/70 bg-white shadow-md sm:w-[600px]"
-              style={{
-                transform: "rotate3d(1, 1, 1, 5deg)",
-                perspective: 1000,
-                transformStyle: "preserve-3d",
-              }}
-            >
-              <Image
-                alt="FlashCards Page"
-                src="/images/flashcards-page.png"
-                className="w-full object-contain"
-                fill
-              />
-            </div>
+          <h1 className="mb-10 text-2xl font-bold sm:text-5xl">
+            Supercharge your learning with SmartFlash!
+          </h1>
+        </AnimateOnVisible>
+
+        <AnimateOnVisible
+          initial={{ opacity: 0, translateX: -50 }}
+          animate={{ opacity: 1, translateX: 0 }}
+          exit={{ opacity: 0, translateX: 0 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
+          <p className="rounded-md bg-red-100 p-5 text-sm">
+            Take control of your knowledge and boost your memory retention.
+            Start mastering new concepts today and unlock your full learning
+            potential.
+          </p>
+        </AnimateOnVisible>
+      </div>
+      <AnimateOnVisible
+        initial={{ opacity: 0, translateX: 50 }}
+        animate={{ opacity: 1, translateX: 0 }}
+        exit={{ opacity: 0, translateX: 0 }}
+        transition={{ duration: 0.3 }}
+        className="w-full"
+      >
+        <div className="mt-10 flex h-[300px] w-full flex-row justify-center px-0 sm:h-[400px] lg:mt-0 lg:px-8 xl:px-16">
+          <div
+            className="relative flex h-full w-full flex-row justify-center overflow-hidden 
+                  rounded-md border border-gray-200/70 bg-white shadow-md"
+            style={{
+              transform: "rotate3d(1, 1, 1, 5deg)",
+              perspective: 1000,
+              transformStyle: "preserve-3d",
+            }}
+          >
+            <Image
+              alt="FlashCards Page"
+              src="/images/flashcards-page.png"
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority
+              fill
+            />
           </div>
-        </motion.div>
-      </AnimatePresence>
+        </div>
+      </AnimateOnVisible>
     </section>
   );
 }

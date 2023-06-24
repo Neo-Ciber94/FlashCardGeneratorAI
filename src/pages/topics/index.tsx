@@ -72,7 +72,7 @@ export default function TopicListPage({
       </Head>
 
       <div className="px-4 py-4 md:px-20">
-        <h1 className="text-3xl font-bold text-gray-700">
+        <h1 className="text-3xl font-bold text-gray-700 dark:text-white">
           <span>Topics</span>
         </h1>
 

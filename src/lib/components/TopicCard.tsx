@@ -39,14 +39,16 @@ export default function TopicCard({ topic, onEdit, onDelete }: TopicCardProps) {
     <>
       <Link href={`/topics/${topic.id}`}>
         <div
-          className=" border border-gray-200 rounded-lg shadow-md p-2 flex flex-col justify-between gap-3 
-      transition-shadow hover:shadow-lg hover:shadow-red-200 duration-300"
+          className=" flex flex-col justify-between gap-3 rounded-lg border border-gray-200 dark:border-white/10
+          p-2 shadow-md transition-shadow duration-300 hover:shadow-lg hover:shadow-red-200 dark:hover:shadow-red-200/10"
         >
           <div className="flex flex-row items-center gap-3 px-1 py-6">
-            <div className="w-8 h-8 text-red-500 flex-grow-0 flex-shrink-0 ml-3">
+            <div className="ml-3 h-8 w-8 flex-shrink-0 flex-grow-0 text-red-500">
               <DocumentDuplicateIcon />
             </div>
-            <p className="text-black line-clamp-3">{topic.name}</p>
+            <p className="line-clamp-3 text-black dark:text-white">
+              {topic.name}
+            </p>
 
             <ContextMenu
               items={[
@@ -73,7 +75,7 @@ export default function TopicCard({ topic, onEdit, onDelete }: TopicCardProps) {
           </div>
 
           <div className="w-full">
-            <hr />
+            <hr className="dark:opacity-30" />
             <small className="mt-3 flex flex-row justify-between text-[10px] text-gray-400">
               {/* <span>4 cards</span> */}
               <span></span>

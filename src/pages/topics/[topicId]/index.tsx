@@ -70,7 +70,7 @@ export default function FlashCardPage({
           ]}
         />
 
-        <h1 className="text-xl font-bold text-gray-700">{topic.name}</h1>
+        <h1 className="text-xl font-bold text-gray-700 dark:text-white">{topic.name}</h1>
 
         <div className="my-2 mt-5 flex flex-col justify-center gap-2 xs:flex-row sm:justify-end">
           <button
@@ -100,7 +100,7 @@ export default function FlashCardPage({
               <div className="h-12 w-12">
                 <ArchiveIcon />
               </div>
-              <span>No FlashCards</span>
+              <span className="dark:text-white">No FlashCards</span>
             </div>
           </div>
         )}

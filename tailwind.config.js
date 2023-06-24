@@ -1,7 +1,8 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,7 +10,7 @@ module.exports = {
   ],
   theme: {
     screens: {
-      'xs': '350px',
+      xs: "350px",
       ...defaultTheme.screens,
     },
     extend: {

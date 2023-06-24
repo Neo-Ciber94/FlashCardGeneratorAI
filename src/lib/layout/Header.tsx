@@ -13,7 +13,7 @@ export default function Header() {
   };
 
   return (
-    <header className="flex h-20 flex-shrink-0 flex-grow-0 flex-row items-center border-b border-gray-200 p-2 shadow">
+    <header className="flex h-20 flex-shrink-0 flex-grow-0 flex-row items-center border-b border-gray-200 dark:border-white/20 p-2 shadow">
       <nav className="flex w-full flex-row items-center justify-between px-5">
         <div className="flex flex-row items-center">
           <Link href="/">

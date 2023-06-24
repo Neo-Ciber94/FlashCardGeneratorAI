@@ -83,14 +83,14 @@ export default function FlashCardEditor({
 
   return (
     <form onSubmit={handleSubmit(submit)}>
-      <div className="flex xs:flex-row flex-col justify-end my-4 gap-4">
+      <div className="my-4 flex flex-col justify-end gap-4 xs:flex-row">
         <button
           type="submit"
-          className="min-w-[150px] flex flex-row shadow-md 
-            items-center gap-2 px-4 py-2 text-white rounded-md
-            bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-400"
+          className="flex min-w-[150px] flex-row items-center 
+            gap-2 rounded-md bg-red-500 px-4 py-2 text-white
+            shadow-md hover:bg-red-600 focus:ring-4 focus:ring-red-400"
         >
-          <div className="w-5 h-5">
+          <div className="h-5 w-5">
             {flashCard ? <PencilIcon /> : <PlusIcon />}
           </div>
           <span>{flashCard ? "Update" : "Create"}</span>
@@ -114,34 +114,34 @@ export default function FlashCardEditor({
         />
       </div>
 
-      <hr className="mt-8 mb-4" />
+      <hr className="mb-4 mt-8 dark:opacity-20" />
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="title" className="font-bold text-xl">
+        <label htmlFor="title" className="text-xl font-bold dark:text-white">
           Title
         </label>
         <input
           {...register("title")}
           id="title"
-          className="shadow-md border border-gray-200 w-full rounded-md h-9 px-4 outline-none"
+          className="h-9 w-full rounded-md border border-gray-200 px-4 shadow-md outline-none"
           style={{
             backgroundColor: color,
           }}
         />
 
         {errors.title && (
-          <small className="text-red-500 italic">{errors.title?.message}</small>
+          <small className="italic text-red-500">{errors.title?.message}</small>
         )}
       </div>
 
-      <div className="h-full mt-4">
-        <label htmlFor="content" className="font-bold text-xl mb-2 block">
+      <div className="mt-4 h-full">
+        <label htmlFor="content" className="mb-2 block text-xl font-bold dark:text-white">
           Content
         </label>
         <textarea
           {...register("content")}
           id="content"
-          className="resize-none min-h-[300px] py-7 overflow-hidden pattern shadow-md border border-gray-200 bg-transparent w-full h-full leading-6 px-4 outline-none"
+          className="pattern h-full min-h-[300px] w-full resize-none overflow-hidden border border-gray-200 bg-transparent px-4 py-7 leading-6 shadow-md outline-none"
           rows={10}
           style={{
             backgroundColor: color,
